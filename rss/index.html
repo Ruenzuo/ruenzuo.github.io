@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Tue, 26 Nov 2013 00:41:57 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Three random thoughts on indie software development]]></title><description><![CDATA[<p>I have been thinking on three things about software development that are somehow related:</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Tue, 26 Nov 2013 02:56:15 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Continuous Delivery on Android - Part I]]></title><description><![CDATA[<p>Today I'll share my setup for continuous delivery on Android using <a href='http://www.gradle.org/' >gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. But first, what's continuous delivery? which are the motivations for all this? which are the goals of this? why those tools? Wow, those are a lot of questions, so let's break the things a little in the following topics:</p>
+
+<p>Part I:</p>
+
+<ol>
+<li>What is continuous delivery?  </li>
+<li>Motivations and goals</li>
+</ol>
+
+<p>Part II:</p>
+
+<ol>
+<li>Gradle  </li>
+<li>Travis  </li>
+<li>TestFlight</li>
+</ol>
+
+<p>I'm dividing this in two parts because of course <em>divide and conquer</em>.</p>
+
+<hr />
+
+<h1 id="whatiscontinuousdelivery">What is continuous delivery?</h1>
+
+<p>Continuous delivery is a design practice used in software development to automate and improve the process of software delivery. Yes, that's <a href='http://en.wikipedia.org/wiki/Continuous_delivery' >Wikipedia</a>.</p>
+
+<p>Probably you're familiar with this:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/99114459/scrum-explained.png'  alt="scrum-explained" /></p>
+
+<p>That is <a href='http://www.scrumalliance.org/why-scrum' >Scrum</a>, but I'm not gonna expand myself on that here, so we're just gonna focus on the two last graphics: <em>2-4 week sprint</em> and <em>protentially shipable product increment</em>. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>. </p>
+
+<h1 id="motivationsandgoals">Motivations and goals</h1>
+
+<p>Working on mobile projects means that probably on of your main goals is <em>time to market</em>, because let's face it: mobile application development is probably one of the most competitive enviroments on software right now. So, in order to arrive earlier to the party, you need to decide which features will be on your first release.</p>
+
+<p>One interesting approach to do this, and this one is actually <a href='https://developers.facebook.com/events/mobiledevcon/newyork/' #session-fb4ios">being used by Facebook</a>, is to have multiple version of the same application each one with different features. These versions are often distributed to different quality assurance teams. You think this looks complicated? Well, it's not!</p>
+
+<p>Finally, these will be our goals:</p>
+
+<ul>
+<li>Build different versions of an Android application using the same code base.
+<ul><li>Each version should have a determined set of features and those features should be tested individually with instrumentation framework.</li>
+<li>Use different package identifiers and application icons so we can have multiple versions of the application installed and tested on the same devices.</li></ul></li>
+<li>Distribute those versions individually on a continuous delivery enviroment.
+<ul><li>Trigger distributions based on commits on a specific branch.</li>
+<li>Each version should be distributed to a different set of recipients.</li></ul></li>
+</ul>
+
+<p>I guess that looks interesting, right? Keep reading the second part of this if you want to learn how to do all these.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-with-travis/</link><guid isPermaLink="false">ae269b45-3a28-47b7-a3a0-a162c88abe9d</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Tue, 26 Nov 2013 02:55:02 GMT</pubDate></item><item><title><![CDATA[Three random thoughts on indie software development]]></title><description><![CDATA[<p>I have been thinking on three things about software development that are somehow related:</p>
 
 <ol>
 <li>What they don't tell you about Agile... or they do?  </li>
