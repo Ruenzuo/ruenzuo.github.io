@@ -1,5 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Tue, 26 Nov 2013 03:01:07 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Continuous Delivery on Android - Part I]]></title><description><![CDATA[<p>Today I'll share my setup for continuous delivery on Android using <a href='http://www.gradle.org/' >gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. But first, what's continuous delivery? which are the motivations for all this? which are the goals of this? why those tools? Wow, those are a lot of questions, so let's break the things a little in the following topics:</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Wed, 27 Nov 2013 04:46:18 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Continuous Delivery on Android - Part II]]></title><description><![CDATA[<p>This is the second part of my post about my continuous delivery setup on Android using <a href='http://www.gradle.org/' >gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. In this part, I'll be referencing this <a href='https://github.com/Ruenzuo/continuous-delivery-on-android-part-i' >repository</a>. If you're interested in what is continuous delivery or what are the motivations and goals of this be sure to check the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-with-travis/' >first part</a> of this post.</p>
+
+<p>When we finish you'll be dancing like our little friend.</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/99114459/dancing-android.gif'  alt="dancing-android" /></p>
+
+<hr />
+
+<h3 id="gradle">Gradle</h3>
+
+<p>Gradle has been chosen by Google's ADT team to be Android's <a href='http://tools.android.com/tech-docs/new-build-system/user-guide' >next build system</a> so Ant support will be dropped sometime in the future. The following assumes that you have basic knowledge about Android's gradle plugin and Groovy domain-specific language.</p>
+
+<p>I'll make a brief explanation of my <code>build.gradle</code> file shown below in 3 sections:</p>
+
+<ul>
+<li>Build configurations</li>
+<li>Product flavors</li>
+<li>Dependencies</li>
+</ul>
+
+<script src='https://gist.github.com/Ruenzuo/7668340.js' ></script>
+
+<h5 id="buildconfigurations">Build Configurations</h5>
+
+<p>For this example, I'm using <code>targetSdkVersion 18</code> and <code>buildToolsVersion "18.0.1"</code>.</p>
+
+<p>I'm setting <code>debuggable true</code> and <code>zipAlign true</code> on the default debug build type because this will be the APK I'll be delivering with TestFlight. </p>
+
+<h5 id="productflavors">Product flavors</h5>
+
+<p>I'm adding two product flavors <code>free</code> and <code>paid</code>. You need to configure your project <code>src</code> directory to something like <a href='https://github.com/Ruenzuo/android-cd-travis-example/tree/master/WeatherApp/src' >this</a> so gradle can grab the correct files for compiling each version. You're free to add different resources for each version, for instance, you can add <strong>different application icons</strong> (<a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/free/res/drawable-hdpi/ic_launcher.png' >free</a> and <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/paid/res/drawable-hdpi/ic_launcher.png' >paid</a> icons) on each <code>res</code> directory.</p>
+
+<p>For each product flavor, I'm configuring a different <code>packageName</code>, in order to be able to <strong>install both versions on the same device</strong>, and adding a <code>buildConfig</code> variable which can be used from anywhere on the project, for example: <strong>to enable or disable features</strong> on the <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/main/java/com/ruenzuo/weatherapp/base/CitiesBaseActivity.java' #L49">base code</a> or <strong>to test specific features for each build</strong> on your <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/instrumentTest/java/com.ruenzuo.weatherapp.test/CitiesActivityFunctionalTests.java' #L28">tests</a>.</p>
+
+<h5 id="dependencies">Dependencies</h5>
+
+<p>With gradle, you can also specify specific product flavor dependencies, to make APK lighter, and exclude transitive dependencies, so compiler doesn't complain about duplicated files on compilation. In this example, we don't need to compile <code>libs/GoogleAdMobAdsSdk-6.4.1.jar</code> on paid version because its not referenced. </p>
+
+<h3 id="travis">Travis</h3>
+
+<p>Travis is a is a hosted continuous integration service for the open source community. It's fully integrated with GitHub. The following asumes that you have basic knowledge about Travis, unix shell and Android command line tools.</p>
+
+<p>I'll explain the most important parts of my <code>.travis.yml</code> file shown below in 5 sections:</p>
+
+<ul>
+<li>Branches</li>
+<li>Before install</li>
+<li>Install</li>
+<li>Before script</li>
+<li>Script</li>
+</ul>
+
+<script src='https://gist.github.com/Ruenzuo/7668407.js' ></script>
+
+<h5 id="branches">Branches</h5>
+
+<p>In this part, I'm telling Travis to <strong>build only master branch</strong>. Any commit on the master branch will trigger a build, but this can be avoided by adding <code>[ci skip]</code> to the <a href='https://github.com/Ruenzuo/android-cd-travis-example/commit/5a5f37b18bd822075f33d00087ceb217cf0e0798' >commit message</a>.</p>
+
+<h5 id="beforeinstall">Before install</h5>
+
+<p>Sadly, Travis doesn't offer an Android development environment so we need to install everything by our own. This is done on <code>before_install</code> part of the script.</p>
+
+<h5 id="install">Install</h5>
+
+<p>I'm skipping the default <code>install</code> behaivour of Travis described <a href='http://about.travis-ci.org/docs/user/languages/java/' #Projects-Using-Gradle">here</a>, because I really don't need it, I'm using gradle wrapper which I think it's the best.</p>
+
+<h5 id="beforescript">Before script</h5>
+
+<p>On <code>before_script</code> I'm using <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/Scripts/wait_for_emulator.sh' >this</a> script to launch the simulator and wait until it's ready, then I'm using <code>adb shell input keyevent 82 &amp;</code> which gives the virtual device an unlock message.</p>
+
+<h5 id="script">Script</h5>
+
+<p>Finally, on <code>script</code> I'm using the gradle wrappler to run instrument tests, this task will also generate debug APK both for free and paid flavors on the following path <code>$TRAVIS_BUILD_DIR/WeatherApp/build/apk/</code>. The rest of the script will be described on the next topic. </p>
+
+<h3 id="testflight">TestFlight</h3>
+
+<p>TestFlight is a free platform used to distribute beta and internal iOS/Android applications to team members over-the-air. The following asumes that you have basic knowledge about the service.</p>
+
+<p>As we seen on the last section <code>script</code> of the <code>.travis.yml</code> file, I'm using <code>curl</code> to upload both APKs to TestFlight API adding <code>distribution_lists</code> parameter so <strong>each version is distributed to a different set of recipients</strong>.</p>
+
+<p>For this, you need to create and configure two applications on TestFlight:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/99114459/testflight.png'  alt="testflight" /></p>
+
+<p>Get the <code>api_token</code> and <code>team_token</code> from TestFlight and create the desired number of <code>distribution_lists</code>. You can find this option on the bottom of the People section of the webpage:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/99114459/distribution-lists.png'  alt="distribution-lists" /></p>
+
+<p>Remember that you can specify if you want to <code>notify</code> those users about a new build. Another cool thing you can do is to add <code>notes</code> for the build information, here you can use Travis <a href='http://about.travis-ci.org/docs/user/ci-environment/' #Environment-variables">environment variables</a> to add interesting information to those notes.</p>
+
+<hr />
+
+<h3 id="closing">Closing</h3>
+
+<p>Hopefully you get everything right. But if not, just send me an an email to <a href='mailto:renzo.crisostomo@me.com' >renzo.crisostomo@me.com</a>. Good luck and thanks for reading.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-part-ii/</link><guid isPermaLink="false">fe1098cd-eab0-4660-9cf5-578acc3c5b84</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Tue, 26 Nov 2013 22:25:49 GMT</pubDate></item><item><title><![CDATA[Continuous Delivery on Android - Part I]]></title><description><![CDATA[<p>Today I'll share my setup for continuous delivery on Android using <a href='http://www.gradle.org/' >gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. But first, what's continuous delivery? what are the motivations for all this? what are the goals of this? why those tools? Wow, those are a lot of questions, so let's break the things a little in the following topics:</p>
 
 <p>Part I:</p>
 
@@ -20,7 +114,7 @@
 
 <hr />
 
-<h1 id="whatiscontinuousdelivery">What is continuous delivery?</h1>
+<h3 id="whatiscontinuousdelivery">What is continuous delivery?</h3>
 
 <p>Continuous delivery is a design practice used in software development to automate and improve the process of software delivery. Yes, that's <a href='http://en.wikipedia.org/wiki/Continuous_delivery' >Wikipedia</a>.</p>
 
@@ -30,7 +124,7 @@
 
 <p>That is <a href='http://www.scrumalliance.org/why-scrum' >Scrum</a>, but I'm not gonna expand myself on that here, so we're just gonna focus on the two last graphics: <em>2-4 week sprint</em> and <em>protentially shipable product increment</em>. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>. </p>
 
-<h1 id="motivationsandgoals">Motivations and goals</h1>
+<h3 id="motivationsandgoals">Motivations and goals</h3>
 
 <p>Working on mobile projects means that probably on of your main goals is <em>time to market</em>, because let's face it: mobile application development is probably one of the most competitive environments on software right now. So, in order to arrive earlier to the party, you need to decide which features will be on your first release.</p>
 
@@ -47,7 +141,7 @@
 <li>Each version should be distributed to a different set of recipients.</li></ul></li>
 </ul>
 
-<p>I guess that looks interesting, right? Keep reading the second part of this if you want to learn how to do all these.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-with-travis/</link><guid isPermaLink="false">ae269b45-3a28-47b7-a3a0-a162c88abe9d</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Tue, 26 Nov 2013 02:55:02 GMT</pubDate></item><item><title><![CDATA[Three random thoughts on indie software development]]></title><description><![CDATA[<p>I have been thinking on three things about software development that are somehow related:</p>
+<p>I guess that looks interesting, right? Keep reading the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-ii' >second part</a> of this if you want to learn how to do all these.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-part-i/</link><guid isPermaLink="false">ae269b45-3a28-47b7-a3a0-a162c88abe9d</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Tue, 26 Nov 2013 02:55:02 GMT</pubDate></item><item><title><![CDATA[Three random thoughts on indie software development]]></title><description><![CDATA[<p>I have been thinking on three things about software development that are somehow related:</p>
 
 <ol>
 <li>What they don't tell you about Agile... or they do?  </li>

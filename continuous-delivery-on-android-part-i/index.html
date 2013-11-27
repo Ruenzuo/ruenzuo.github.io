@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    
+    <title>Continuous Delivery on Android - Part I</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+
+    
+    <meta name="generator" content="Ghost 0.3" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss/">
+</head>
+<body class="post-template tag-android">
+
+    
+    
+
+
+
+<main class="content" role="main">
+
+    <article class="post tag-android">
+
+        
+        <header class="post-header">
+            <a id="blog-logo" href="http://ruenzuo.github.io">
+                
+                    Ruenzuo.io
+                
+            </a>
+        </header>
+
+        
+        
+
+        
+        <span class="post-meta"><time datetime="2013-11-25">25 Nov 2013</time> on Android</span>
+
+        <h1 class="post-title">Continuous Delivery on Android - Part I</h1>
+
+        <section class="post-content">
+            <p>Today I'll share my setup for continuous delivery on Android using <a href="http://www.gradle.org/">gradle</a>, <a href="https://travis-ci.org/">Travis</a> and <a href="https://www.testflightapp.com/">TestFlight</a>. But first, what's continuous delivery? what are the motivations for all this? what are the goals of this? why those tools? Wow, those are a lot of questions, so let's break the things a little in the following topics:</p>
+
+<p>Part I:</p>
+
+<ol>
+<li>What is continuous delivery?  </li>
+<li>Motivations and goals</li>
+</ol>
+
+<p>Part II:</p>
+
+<ol>
+<li>Gradle  </li>
+<li>Travis  </li>
+<li>TestFlight</li>
+</ol>
+
+<p>I'm dividing this in two parts because of course <em>divide and conquer</em>.</p>
+
+<hr />
+
+<h3 id="whatiscontinuousdelivery">What is continuous delivery?</h3>
+
+<p>Continuous delivery is a design practice used in software development to automate and improve the process of software delivery. Yes, that's <a href="http://en.wikipedia.org/wiki/Continuous_delivery">Wikipedia</a>.</p>
+
+<p>Probably you're familiar with this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/99114459/scrum-explained.png" alt="scrum-explained" /></p>
+
+<p>That is <a href="http://www.scrumalliance.org/why-scrum">Scrum</a>, but I'm not gonna expand myself on that here, so we're just gonna focus on the two last graphics: <em>2-4 week sprint</em> and <em>protentially shipable product increment</em>. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>. </p>
+
+<h3 id="motivationsandgoals">Motivations and goals</h3>
+
+<p>Working on mobile projects means that probably on of your main goals is <em>time to market</em>, because let's face it: mobile application development is probably one of the most competitive environments on software right now. So, in order to arrive earlier to the party, you need to decide which features will be on your first release.</p>
+
+<p>One interesting approach to do this, and this one is actually <a href="https://developers.facebook.com/events/mobiledevcon/newyork/#session-fb4ios">being used by Facebook</a>, is to have multiple version of the same application each one with different features. These versions are often distributed to different quality assurance teams. You think this looks complicated? Well, it's not!</p>
+
+<p>Finally, these will be our goals:</p>
+
+<ul>
+<li>Build different versions of an Android application using the same code base.
+<ul><li>Each version should have a determined set of features and those features should be tested individually with instrumentation framework.</li>
+<li>Use different package identifiers and application icons so we can have multiple versions of the application installed and tested on the same devices.</li></ul></li>
+<li>Distribute those versions individually on a continuous delivery environment.
+<ul><li>Trigger distributions based on commits on a specific branch.</li>
+<li>Each version should be distributed to a different set of recipients.</li></ul></li>
+</ul>
+
+<p>I guess that looks interesting, right? Keep reading the <a href="http://ruenzuo.github.io/continuous-delivery-on-android-part-ii">second part</a> of this if you want to learn how to do all these.</p>
+        </section>
+
+        <footer class="post-footer">
+
+            
+                <section class="author">
+                    <h4>Renzo Crisóstomo</h4>
+                    <p></p>
+                </section>
+            
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="http://twitter.com/share?text=Continuous Delivery on Android - Part I&url=http://ruenzuo.github.io/continuous-delivery-on-android-part-i/"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://ruenzuo.github.io/continuous-delivery-on-android-part-i/"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://ruenzuo.github.io/continuous-delivery-on-android-part-i/"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+        
+
+    </article>
+
+</main>
+
+    <footer class="site-footer">
+        <a class="subscribe icon-feed" href="http://ruenzuo.github.io/rss/"><span class="tooltip">Subscribe!</span></a>
+        <div class="inner">
+             <section class="copyright">All content copyright <a href="/">Ruenzuo.io</a> &copy; 2013 &bull; All rights reserved.</section>
+             <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://ghost.org">Ghost</a></section>
+        </div>
+    </footer>
+
+    
+    <script src="/shared/vendor/jquery/jquery.js"></script>
+
+    
+    <script type="text/javascript" src="/assets/js/index.js"></script>
+
+</body>
+</html>
