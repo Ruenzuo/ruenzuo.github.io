@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Thu, 28 Nov 2013 04:31:21 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Continuous Delivery on Android - Part II]]></title><description><![CDATA[<p>This is the second part of my post about continuous delivery setup on Android using <a href='http://www.gradle.org/' >gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. For this part, I'll be referencing this <a href='https://github.com/Ruenzuo/android-cd-travis-example' >repository</a>. If you're interested in what is continuous delivery or what are the motivations and goals of it be sure to check the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-i/' >first part</a> of this post.</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Tue, 03 Dec 2013 04:49:39 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Continuous Delivery on Android - Part II]]></title><description><![CDATA[<p>This is the second part of my post about continuous delivery setup on Android using <a href='http://www.gradle.org/' >gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. For this part, I'll be referencing this <a href='https://github.com/Ruenzuo/android-cd-travis-example' >repository</a>. If you're interested in what is continuous delivery or what are the motivations and goals of it be sure to check the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-i/' >first part</a> of this post.</p>
 
 <p>When we finish you'll be dancing like our little friend.</p>
 
@@ -39,7 +39,7 @@
 
 <h3 id="travis">Travis</h3>
 
-<p>Travis is a is a hosted continuous integration service for the open source community. It's fully integrated with GitHub. The following asumes that you have basic knowledge about Travis, unix shell and Android command line tools.</p>
+<p>Travis is a is a hosted continuous integration service for the open source community. It's fully integrated with GitHub. The following assumes that you have basic knowledge about Travis, unix shell and Android command line tools.</p>
 
 <p>I'll explain the most important parts of my <code>.travis.yml</code> file shown below in 5 sections:</p>
 
@@ -75,7 +75,7 @@
 
 <h3 id="testflight">TestFlight</h3>
 
-<p>TestFlight is a free platform used to distribute beta and internal iOS/Android applications to team members over-the-air. The following asumes that you have basic knowledge about the service.</p>
+<p>TestFlight is a free platform used to distribute beta and internal iOS/Android applications to team members over-the-air. The following assumes that you have basic knowledge about the service.</p>
 
 <p>As we seen on the last section <code>script</code> of the <code>.travis.yml</code> file, I'm using <code>curl</code> to upload both APKs to TestFlight API adding <code>distribution_lists</code> parameter so <strong>each version is distributed to a different set of recipients</strong>.</p>
 
@@ -122,7 +122,7 @@
 
 <p><img src='https://dl.dropboxusercontent.com/u/99114459/scrum-explained.png'  alt="scrum-explained" /></p>
 
-<p>That is <a href='http://www.scrumalliance.org/why-scrum' >Scrum</a>, but I'm not gonna expand myself on that here, so we're just gonna focus on the two last graphics: <em>2-4 week sprint</em> and <em>protentially shipable product increment</em>. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>. </p>
+<p>That is <a href='http://www.scrumalliance.org/why-scrum' >Scrum</a>, but I will not explain this here, we will only focus on the last two graphs: <em>2-4 week sprint</em> and <em>potentially shippable product increment</em>. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>. </p>
 
 <h3 id="motivationsandgoals">Motivations and goals</h3>
 
@@ -144,25 +144,25 @@
 <p>I guess that looks interesting, right? Keep reading the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-ii' >second part</a> of this if you want to learn how to do all these.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-part-i/</link><guid isPermaLink="false">ae269b45-3a28-47b7-a3a0-a162c88abe9d</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Tue, 26 Nov 2013 02:55:02 GMT</pubDate></item><item><title><![CDATA[Three random thoughts on indie software development]]></title><description><![CDATA[<p>I have been thinking on three things about software development that I believe are somehow related:</p>
 
 <ol>
-<li>What they <em>don't tell you</em> about Agile... or do they?  </li>
-<li>You can't do <em>everything</em> on your own... or can you?  </li>
+<li>What they <em>don't tell you</em> about Agile... Or do they?  </li>
+<li>You can't do <em>everything</em> on your own... Or can you?  </li>
 <li>What's the best way to do everything <em>on your own</em>?</li>
 </ol>
 
-<p>You may be wondering how they are related... let me explain myself.</p>
+<p>You may be wondering how they are related... Let me explain myself.</p>
 
 <hr />
 
 <h3 id="whattheydonttellyouaboutagile">What they don't tell you about Agile</h3>
 
-<p>Agile is <strong>hard</strong>. Yes, we all have been lied about it. Let's analyse for instance two agile methodologies: </p>
+<p>Agile is <strong>hard</strong>. Yes, we all have been lied about it. Let's analyze for instance two agile methodologies: </p>
 
 <ul>
 <li>Scrum</li>
 <li>eXtreme Programming</li>
 </ul>
 
-<p>On the first, you have three main roles: scrum master, product owner and the team, let's focus on the last one. As a team member, you should be involved on several tasks performing multiple roles in diferent disciplines such as requirements, design, construction, testing, maintainance and configuration management. Specialization is not forbidden, but multi-disciplinary teams are encourage.</p>
+<p>On the first, you have three main roles: scrum master, product owner and the team, let's focus on the last one. As a team member, you should be involved on several tasks performing multiple roles in different disciplines such as requirements, design, construction, testing, maintenance and configuration management. Specialization is not forbidden, but multi-disciplinary teams are encourage.</p>
 
 <p>On the second, you have a set of practices and some of them are really hard to get done right, like: test driven development and coding standards are really advanced stuff for junior software developers, continuous integration and small releases are somehow difficult to accomplish depending on your IT infrastructure, collective ownership could be a nightmare done wrong. </p>
 
@@ -172,25 +172,25 @@
 
 <h3 id="youcantdoeverythingonyourown">You can't do everything on your own</h3>
 
-<p>You can't. I think some of us are getting the wrong idea about indie software development... what's indie on these days anyways? I'll explain this with two successfull independent software development <em>teams</em>:</p>
+<p>You can't. I think some of us are getting the wrong idea about indie software development... What's indie on these days anyways? I'll explain this with two successful independent software development <em>teams</em>:</p>
 
 <ul>
 <li><a href='http://tapbots.com/company/' >Tapbots</a>, creators of the amazing iOS app Tweetbot.</li>
 <li><a href='http://supermeatboy.com/about/' >Team Meat</a>, creators of the video game hit Super Meat Boy.</li>
 </ul>
 
-<p>Both teams are conformed by a developer and a designer, so it's clear that those aren't lone wolves and I think there's a reason about that. Most tasks on software development and design must be reviewed by different points of view, and it's so easy to miss a thing... Also, development and testing tasks should be done by someone different, otherwise is a dissaster. If you want to learn more on how this teams are organized, I recomend reading both teams blogs and watch this awesome <a href='http://www.indiegamethemovie.com/' >movie</a>.</p>
+<p>Both teams are conformed by a developer and a designer, so it's clear that those aren't lone wolves and I think there's a reason about that. Most tasks on software development and design must be reviewed by different points of view, and it's so easy to miss a thing... Also, development and testing tasks should be done by someone different, otherwise is a disaster. If you want to learn more on how this teams are organized, I recommend reading both teams blogs and watch this awesome <a href='http://www.indiegamethemovie.com/' >movie</a>.</p>
 
 <h3 id="whatsthebestwaytodoeverythingonyourown">What's the best way to do everything <em>on your own</em></h3>
 
 <p>Is Agile the best way? I think it is the right direction. I have been told that Apple apps teams are conformed by 3 people: a developer, a designer and a marketing analyst working with a methodology very similar to scrum. And reading both Tapbots and Team Meat blogs got me an idea on how are they organized, which is again very similar to scrum.</p>
 
-<p>Scrum isn't recomended for teams of two people and I couldn't find information regarding an agile methodology for teams conformed by two people, so there's an interesting field of research there.</p>
+<p>Scrum isn't recommended for teams of two people and I couldn't find information regarding an agile methodology for teams conformed by two people, so there's an interesting field of research there.</p>
 
 <p>How are these three thoughts related?</p>
 
 <ul>
-<li>Independant software development it's <strong>hard</strong>. You have to fulfill multi-disciplinary roles and you have to be the best on each one, pretty much like doing agile, the right way.</li>
+<li>Independent software development it's <strong>hard</strong>. You have to fulfill multi-disciplinary roles and you have to be the best on each one, pretty much like doing agile, the right way.</li>
 <li>You can't do everything on your own, but it seems that there is a kind of magic formula with two people teams.</li>
 <li>There's an interesting field of research on this two people independent software development teams using kind of agile practices.</li>
 </ul>
@@ -229,7 +229,7 @@
 
 <h3 id="thescared">The scared</h3>
 
-<p>Everything until here sounds great, isn't it? Well it goes ugly from here. Nintendo wasn't happy with me using their copyrighted sounds so I had to remove my app from the store. Then, chaotic awesome went chaotic awfull at work, so I quit. And it wasn't easy to quit that job, I'll tell you more about that some other time.</p>
+<p>Everything until here sounds great, isn't it? Well it goes ugly from here. Nintendo wasn't happy with me using their copyrighted sounds so I had to remove my app from the store. Then, chaotic awesome went chaotic awful at work, so I quit. And it wasn't easy to quit that job, I'll tell you more about that some other time.</p>
 
 <p>Then I felt confused, had a couple ideas for apps at my head but the App Store market wasn't the same anymore. I got a job in a couple of places but I really didn't enjoyed those. Was this really what I want for the rest of my live?</p>
 
