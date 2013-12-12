@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Sat, 07 Dec 2013 05:19:29 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Dream job]]></title><description><![CDATA[<p>I believe that the concept of <em>dream job</em> is something that depends on several factors. For me, as a software engineer and not necessary in a particular order, these are most important ones:</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Thu, 12 Dec 2013 05:03:27 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Dream job]]></title><description><![CDATA[<p>I believe that the concept of <em>dream job</em> is something that depends on several factors. For me, as a software engineer and not necessary in a particular order, these are most important ones:</p>
 
 <ul>
 <li>Organization goals</li>
@@ -17,7 +17,7 @@
 
 <h3 id="competitivity">Competitivity</h3>
 
-<p><img src='https://dl.dropboxusercontent.com/u/99114459/hype-cycle.png'  alt="hype-cycle" /></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/hype-cycle.png' ></p>
 
 <p>Remain competitive in the market is hard for a software engineer. It's not <strong>only</strong> about skills, position or salary, I think that emerging technologies, shown above on "Gartner's Hype Cycle for Emerging Technologies, 2013", somehow drives business goals and creates new challenges that software engineers must be familiar with and ready to face. For me, it's important to work in an organization that help me to remain myself competitive in all the different aspects mentioned before. The fact is, I never worked in an organization that offered me all mentioned above.</p>
 
@@ -25,13 +25,15 @@
 
 <p>Last but not least, a good work environment is really important because most of the tasks I do in my work require <strong>mental</strong> effort and creativity, like software development, design and testing. Working in an environment that has a lot of tension and conflicts is not suitable for creativity and often produces mental blocks, which means a complete incapacity of being productive at work if you happen to use your mind to work, I'm sure you're familiar with this. On my first job as a software developer I found myself on a chaotic environment and this was all produced by the lack of a software development methodology. That's where I learnt the value of it. Naturally I quit the job and I promised myself never again work for a company that doesn't back up their work with a software development methodology.</p>
 
+<hr />
+
 <h3 id="closing">Closing</h3>
 
 <p>I think that probably on the next years this list would be different, but nevertheless I wanted to share this with you now because I think there are a lot of people out there trying to figure out why their employees are leaving their companies. Truth be told: every single job I left was because of these factors. I'm still looking for my <em>dream job</em>. Wish me luck.</p>]]></description><link>http://ruenzuo.github.io/dream-job/</link><guid isPermaLink="false">2551fa34-e422-464b-8a6d-a7b6c70d8568</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sat, 07 Dec 2013 04:57:46 GMT</pubDate></item><item><title><![CDATA[Continuous Delivery on Android - Part II]]></title><description><![CDATA[<p>This is the second part of my post about continuous delivery setup on Android using <a href='http://www.gradle.org/' >gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. For this part, I'll be referencing this <a href='https://github.com/Ruenzuo/android-cd-travis-example' >repository</a>. If you're interested in what is continuous delivery or what are the motivations and goals of it be sure to check the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-i/' >first part</a> of this post.</p>
 
 <p>When we finish you'll be dancing like our little friend.</p>
 
-<p><img src='https://dl.dropboxusercontent.com/u/99114459/dancing-android.gif'  alt="dancing-android" /></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/dancing-android.gif' ></p>
 
 <hr />
 
@@ -109,11 +111,11 @@
 
 <p>For this, you need to create and configure two applications on TestFlight:</p>
 
-<p><img src='https://dl.dropboxusercontent.com/u/99114459/testflight.png'  alt="testflight" /></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/testflight.png' ></p>
 
 <p>Get the <code>api_token</code> and <code>team_token</code> from TestFlight and create the desired number of <code>distribution_lists</code>. You can find this option on the bottom of the People section of the webpage:</p>
 
-<p><img src='https://dl.dropboxusercontent.com/u/99114459/distribution-lists.png'  alt="distribution-lists" /></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/distribution-lists.png' ></p>
 
 <p>Remember that you can specify if you want to <code>notify</code> those users about a new build. Another cool thing you can do is to add <code>notes</code> for the build information, here you can use Travis <a href='http://about.travis-ci.org/docs/user/ci-environment/' #Environment-variables">environment variables</a> to add interesting information to those notes.</p>
 
@@ -148,7 +150,7 @@
 
 <p>Probably you're familiar with this:</p>
 
-<p><img src='https://dl.dropboxusercontent.com/u/99114459/scrum-explained.png'  alt="scrum-explained" /></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/scrum-explained.png' ></p>
 
 <p>That is <a href='http://www.scrumalliance.org/why-scrum' >Scrum</a>, but I will not explain this here, we will only focus on the last two graphs: <em>2-4 week sprint</em> and <em>potentially shippable product increment</em>. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>. </p>
 
@@ -161,12 +163,12 @@
 <p>Finally, these will be our goals:</p>
 
 <ul>
-<li>Build different versions of an Android application using the same code base.
-<ul><li>Each version should have a determined set of features and those features should be tested individually with instrumentation framework.</li>
-<li>Use different package identifiers and application icons so we can have multiple versions of the application installed and tested on the same devices.</li></ul></li>
-<li>Distribute those versions individually on a continuous delivery environment.
-<ul><li>Trigger distributions based on commits on a specific branch.</li>
-<li>Each version should be distributed to a different set of recipients.</li></ul></li>
+<li>Build different versions of an Android application using the same code base.</li>
+<li>Each version should have a determined set of features and those features should be tested individually with instrumentation framework.</li>
+<li>Use different package identifiers and application icons so we can have multiple versions of the application installed and tested on the same devices.</li>
+<li>Distribute those versions individually on a continuous delivery environment.</li>
+<li>Trigger distributions based on commits on a specific branch.</li>
+<li>Each version should be distributed to a different set of recipients.</li>
 </ul>
 
 <p>I guess that looks interesting, right? Keep reading the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-ii' >second part</a> of this if you want to learn how to do all these.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-part-i/</link><guid isPermaLink="false">ae269b45-3a28-47b7-a3a0-a162c88abe9d</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Tue, 26 Nov 2013 02:55:02 GMT</pubDate></item><item><title><![CDATA[Three random thoughts on indie software development]]></title><description><![CDATA[<p>I have been thinking on three things about software development that I believe are somehow related:</p>
@@ -194,7 +196,7 @@
 
 <p>On the second, you have a set of practices and some of them are really hard to get done right, like: test driven development and coding standards are really advanced stuff for junior software developers, continuous integration and small releases are somehow difficult to accomplish depending on your IT infrastructure, collective ownership could be a nightmare done wrong. </p>
 
-<p><img src='https://dl.dropboxusercontent.com/u/99114459/xp-practices.png'  alt="xp-practices" /></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/xp-practices.png' ></p>
 
 <p>You get the idea.</p>
 
@@ -223,9 +225,7 @@
 <li>There's an interesting field of research on this two people independent software development teams using kind of agile practices.</li>
 </ul>
 
-<p>All these has my attention for further research, so I'll keep you posted on this when I'll have more information.</p>]]></description><link>http://ruenzuo.github.io/three-random-thoughts-on-software-development/</link><guid isPermaLink="false">31fe8076-6792-4fc1-848f-351296ec09dc</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Mon, 25 Nov 2013 05:01:30 GMT</pubDate></item><item><title><![CDATA[Hello, world]]></title><description><![CDATA[<p><img src='https://dl.dropboxusercontent.com/u/99114459/hello-world.png'  alt="Hello, world" /></p>
-
-<p>It's been a little less than six years since my first "Hello, world". I know it's not much, but still, it feels great to start this blog in order to share my experience through this time. I really hope someone finds something useful here.</p>
+<p>All these has my attention for further research, so I'll keep you posted on this when I'll have more information.</p>]]></description><link>http://ruenzuo.github.io/three-random-thoughts-on-software-development/</link><guid isPermaLink="false">31fe8076-6792-4fc1-848f-351296ec09dc</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Mon, 25 Nov 2013 05:01:30 GMT</pubDate></item><item><title><![CDATA[Hello, world]]></title><description><![CDATA[<p>It's been a little less than six years since my first "Hello, world". I know it's not much, but still, it feels great to start this blog in order to share my experience through this time. I really hope someone finds something useful here.</p>
 
 <p>I'll start this by telling you a story in five small chapters:</p>
 
@@ -266,5 +266,11 @@
 <h3 id="thedreamer">The dreamer</h3>
 
 <p>On February 2013 I started working on a truly <a href='http://www.tallertechnologies.com/' >agile organization</a>. This was awesome! Scrum, eXtreme Programming and Kanban. I worked with the best practices on software development: continuous integration, continuous delivery, unit testing and static code analysis. I also learned about the importance of open source software development and even started contributing to some small projects! And all these motivate me to start this blog.</p>
+
+<hr />
+
+<h3 id="closing">Closing</h3>
+
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/hello-world.png' ></p>
 
 <p>So here I am. My name is Renzo Crisóstomo and on this blog I'll share with you all these experiences, I hope you enjoy reading this as much I enjoy writing it.</p>]]></description><link>http://ruenzuo.github.io/hello-world/</link><guid isPermaLink="false">b2c8b04b-f895-4f7c-acfa-49c47ccfc659</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sun, 10 Nov 2013 04:18:22 GMT</pubDate></item></channel></rss>

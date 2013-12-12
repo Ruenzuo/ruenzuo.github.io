@@ -1,0 +1,486 @@
+#page_kathreen {
+	position: absolute;
+	width: 100%;
+	overflow-x: hidden;
+	z-index: -1;
+}
+#post_kathreen {
+	width: 100%;
+	max-width: 1000px;
+	background-color: #fff;
+	padding: 60px;
+	margin: 100px auto 0;
+	overflow-x: hidden;
+	position: relative;
+	-webkit-transition: left 0.3s ease;
+	-moz-transition: left 0.3s ease;
+	-ms-transition: left 0.3s ease;
+	-o-transition: left 0.3s ease;
+	transition: left 0.3s ease;
+}
+
+/* Typography */
+#post_kathreen h1,
+#post_kathreen h2,
+#post_kathreen h3,
+#post_kathreen h4,
+#post_kathreen h5,
+#post_kathreen h6 {
+	margin: 0;
+	padding: 0;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 200;
+}
+#post_kathreen h1,
+#post_kathreen h2,
+#post_kathreen h3,
+#post_kathreen h4,
+#post_kathreen h5,
+#post_kathreen h6 {
+	font-size: 50px;
+	line-height: 60px;
+	margin: 40px 0;
+	color: #555;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+#post_kathreen h2 {
+    font-size: 46px;
+    line-height: 54px;
+}
+#post_kathreen h3 {
+    font-size: 42px !important;
+    line-height: 52px !important;
+}
+#post_kathreen h4 {
+    font-size: 36px;
+    line-height: 42px;
+}
+#post_kathreen h5 {
+    font-size: 32px;
+    line-height: 38px;
+}
+#post_kathreen h6 {
+    font-size: 28px;
+    line-height: 34px;
+}
+#post_kathreen img {
+    width: inherit;
+    float: left;
+    margin: 10px 30px 10px 0;
+}
+#post_kathreen p.image-center img {
+    display: block;
+    float: none;
+    margin: 10px auto !important;
+}
+#post_kathreen p.image-right img {
+    display: inline-block;
+    float: right;
+    margin: 10px 0 10px 30px;
+}
+#post_kathreen img.featured {
+    max-width: 100%;
+}
+#post_kathreen iframe {
+    width: 100%;
+}
+#post_kathreen iframe {
+    display: block;
+    min-height: 510px;
+    z-index: 1;
+}
+#post_kathreen iframe.soundcloud {
+    display: block;
+    min-height: 166px;
+    z-index: 1;
+}
+#post_kathreen iframe.twitter-tweet {
+    position: relative !important;
+    display: block;
+    width: 100%;
+    min-height: 200px !important;
+    z-index: 1;
+    border: 1px solid #ccc !important;
+    margin-bottom: 65px !important;
+}
+#post_kathreen iframe * {
+    z-index: 1;
+}
+#post_kathreen #disqus_thread iframe {
+    min-height: 0;
+}
+#post_kathreen h3 {
+	font-size: 24px;
+	line-height: 24px;
+}
+#post_kathreen p {
+	font-size: 18px;
+	color: rgb(91,96,100);
+	line-height: 31px;
+	font-weight: 300;
+    padding: 0;
+    margin-bottom: 10px;
+}
+#post_kathreen time {
+    width: 50%;
+    display: block;
+    float: left;
+	color: #167ef9;
+	font-weight: 100;
+    clear: none;
+}
+#post_kathreen hr {
+    display: block;
+    width: 100%;
+    height: 1px;
+    border: none;
+    background: #eee;
+    margin: 40px 0;
+}
+input[type="text"] {
+    font-size: 14px;
+    color: #444;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.comments_kathreen {
+	background-color: #fafafa;
+	padding: 40px;
+	margin: 40px 0 0;
+}
+/* Markdown */
+a, a:visited {
+    color: #167ef9;
+    text-decoration: none;
+}
+code {
+    display: inline-block;
+    margin: 0 2px;
+    padding: 0 4px;
+    font-size: 16px;
+    border-radius: 2px;
+    background: #f3f3f3;
+}
+ul, ol {
+    list-style-position: inside;
+    display: block;
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+ul li, ol li {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300 !important;
+    opacity: 0.65;
+    padding: 0 0 0 5px;
+}
+ul li p, ol li p {
+    display: inline-block;
+    margin: 0 0 0 -15px;
+    padding: 0;
+}
+blockquote {
+    display: block;
+    background: #f3f3f3;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px 20px 10px;
+    margin: 20px 15px;
+}
+blockquote p {
+    margin: 0;
+}
+pre code {
+    display: block;
+    margin: 10px 15px 40px;
+    padding: 0 5px;
+    border: 1px solid #eee;
+    border-left: 2px solid #167ef9;
+    overflow: auto;
+    line-height: 2 !important;
+    background: linear-gradient(beige 50%, white 50%);
+    background-size: 100% 4em !important;
+    background-origin: content-box;
+    font-size: 75%;
+    border-radius: 1px;
+}
+table {
+    width: auto;
+    margin: 10px 20px 20px;
+    background: #efefef;
+}
+table tr:nth-child(odd) td {
+    background: #f9f9f9 !important;
+}
+table td, table th {
+    display: table-cell;
+    padding: 12px 20px;
+    margin: 1px;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #00c8bd;
+}
+table td {
+    text-align: left;
+    font-size: 0.85em;
+    border: 1px solid #fff;
+}
+table th {
+    font-weight: 400;
+    color: #fff !important;
+    background: #167ef9 !important;
+    border: 1px solid #fff;
+}
+dl {
+    display: block;
+    margin: 5px 15px 20px !important;
+    line-height: normal !important;
+    font-weight: 300 !important;
+}
+dt {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 400 !important;
+    padding-top: 10px !important;
+}
+dd {
+    display: block;
+    margin: 0 10px 5px 20px !important;
+}
+/* Buttons */
+a.button, a.button:visited {
+    display: inline-block;
+    border: none;
+    outline: none;
+    padding: 10px 25px;
+    border-radius: 2px;
+    background: #ccc;
+    margin: 10px 20px;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    opacity: 1;
+    color: #fff;
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -ms-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+a.button:hover {
+    opacity: 0.75;
+}
+a.button.blue {
+    background: #167ef9;
+}
+a.button.green {
+    background: #94cd54;
+}
+a.button.orange {
+    background: #ffab2f;
+}
+a.button.violet {
+    background: #cc6bd9;
+}
+a.button.pink {
+    background: #f95ef1;
+}
+a.button.black {
+    background: #444;
+}
+/* Tags */
+.tags_kathreen {
+    text-align: center;
+    padding: 0 80px;
+    font-size: 16px;
+    font-weight: 300;
+}
+/* Author */
+footer.postfooter_kathreen {
+    padding: 30px;
+    background:  rgba(0,0,0,0.75);
+}
+footer.postfooter_kathreen address {
+    display: block;
+    clear: both;
+}
+.authorimage_kathreen {
+    display: block;
+    width: 128px;
+    height: 128px;
+    margin: 10px 30px 40px 10px;
+    float: left;
+    overflow: hidden;
+}
+.authorimage_kathreen img.avatar_kathreen {
+    border: 4px solid #ccc;
+    border-radius: 50%;
+    display: block;
+    width: 128px;
+    height: 128px;
+    margin: 0 !important;
+}
+h4.authorname_kathreen, .authorbio_kathreen p {
+    font-size: 16px !important;
+    color: #eee !important;
+    font-style: normal;
+    font-weight: 300 !important;
+}
+h4.authorname_kathreen {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.authorbio_kathreen hr {
+    background: #484848 !important;
+    width: 78% !important;
+    margin: 10px 0 -10px !important;
+}
+.authorwebsite_kathreen a,
+.authorwebsite_kathreen a:visited {
+    font-size: 16px;
+    color: #167ef9;
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 300 !important;
+}
+.authorwebsite_kathreen a.empty:hover {
+    color: #167ef9;
+    cursor: default;
+}
+/* Share */
+.share_kathreen {
+    display: block;
+    height: 32px;
+    width: 50%;
+    clear: none;
+    float: right;
+    text-align: right;
+    margin-top: -7px !important;
+}
+.share_kathreen span {
+    display: inline-block;
+    font-size: 16px;
+    color: #aeaeae;
+    font-weight: 300;
+}
+.share_kathreen span:first-of-type {
+    margin-right: 5px;
+}
+.twitter_kathreen a, .facebook_kathreen a, .googleplus_kathreen a,
+.twitter_kathreen a:visited, .facebook_kathreen a:visited, .googleplus_kathreen a:visited {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin: 0 0 -8px 3px;
+    opacity: .25;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+.twitter_kathreen a:hover, .facebook_kathreen a:hover, .googleplus_kathreen a:hover {
+    opacity: 1;
+}
+.twitter_kathreen a, .twitter_kathreen a:visited {
+    background: url('../images/share.png') 0 0 no-repeat;
+}
+.facebook_kathreen a, .facebook_kathreen a:visited {
+    background: url('../images/share.png') -32px 0 no-repeat;
+}
+.googleplus_kathreen a, .googleplus_kathreen a:visited {
+    background: url('../images/share.png') -64px 0 no-repeat;
+}
+.twitter_kathreen a:hover {
+    background: url('../images/share.png') 0 -32px no-repeat;
+}
+.facebook_kathreen a:hover {
+    background: url('../images/share.png') -32px -32px no-repeat;
+}
+.googleplus_kathreen a:hover {
+    background: url('../images/share.png') -64px -32px no-repeat;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 968px) {
+    #post_kathreen iframe {
+        min-height: 360px;
+    }
+    #page_kathreen {
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+    .authorbio_kathreen hr {
+        width: 68% !important;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #post_kathreen time,
+    .share_kathreen {
+        width: 100%;
+        float: none;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .authorimage_kathreen {
+        width: 100% !important;
+        display: block !important;
+        float: none !important;
+        text-align: center !important;
+        overflow: visible !important;
+        padding: 0 40% !important;
+        margin: 5px 0 -30px !important;
+    }
+    .authorimage_kathreen img {
+        width: 90% !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 1px solid rgb(204,204,204) !important;
+    }
+    h4.authorname_kathreen,
+    .authorbio_kathreen p,
+    .authorwebsite_kathreen a {
+        text-align: center !important;
+    }
+    .authorbio_kathreen hr {
+        width: 80% !important;
+        margin: 10px 10% -10px !important;
+    }
+    .authorwebsite_kathreen a {
+        display: block;
+        text-align: center;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    #post_kathreen iframe {
+        min-height: 280px;
+    }
+}
+
+@media only screen and (max-width: 479px) {
+
+    .share_kathreen span:first-of-type {
+        display: none;
+    }
+    #post_kathreen iframe {
+        min-height: 200px;
+    }
+    .authorimage_kathreen {
+        padding: 0 40% !important;
+        margin: 5px 0 -60px !important;
+    }
+    .authorimage_kathreen img {
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 330px) {
+
+    #post_kathreen iframe {
+        min-height: 100px;
+    }
+}
