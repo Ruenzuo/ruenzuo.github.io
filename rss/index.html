@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Sat, 14 Dec 2013 01:49:36 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Dream job]]></title><description><![CDATA[<p>I believe that the concept of <em>dream job</em> is something that depends on several factors. For me, as a software engineer, these are the most important ones, not necessarily in a particular order:</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Sun, 15 Dec 2013 19:09:36 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Static Analysis on iOS - Part I]]></title><description><![CDATA[<p>On this post I'll cover static program analysis on iOS. Probably you're already familiar with this concept, if not, this is an analysis performed on the source code in order to get its quality metrics. Remember: <a href='http://en.wikipedia.org/wiki/W._Edwards_Deming' >"You can't improve what you don't measure"</a>.</p>
+
+<p>I'll be diving this in two parts. On the first I'll cover the metrics I use, briefly describing each one of them. On the second part I'll show you how to configure these quality metrics on a dashboard using Jenkins continuous integration server. For this last part, I'll be referencing <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example' >this</a> repository a lot.</p>
+
+<p>The quality metrics described below are:</p>
+
+<ul>
+<li>Test results and Code coverage</li>
+<li>PMD analysis results</li>
+<li>Duplicate code trends</li>
+<li>Source lines of code count</li>
+</ul>
+
+<hr />
+
+<h3 id="testresultsandcodecoverage">Test results and Code coverage</h3>
+
+<p>Unit testing is a <strong>fundamental</strong> part of the software development process. As described on Mike Cohn's book "Succeeding with Agile", testing automation efforts on software development should be distributed as shown below:</p>
+
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/test_pyramid.png' ></p>
+
+<p>This means that <a href='http://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid' >"unit testing should be the foundation of a solid test automation strategy and as such represents the largest part of the pyramid"</a>. </p>
+
+<p>This is why this two metrics are are important to me, test results helps you to identify which builds have been broken and coverage gives you interesting information about how much of your code is being covered by your unit tests.</p>
+
+<h3 id="pmdanalysisresults">PMD analysis results</h3>
+
+<p><a href='http://pmd.sourceforge.net/' >PMD</a> is a source code analyzer. It finds common programming flaws like unused variables, empty catch blocks, unnecessary object creation, and so forth. Currently, PMD doesn't have official support for ObjC, but on the second part of this post I'll cover how to get through this.</p>
+
+<p>I found this metrics interesting because it helps me to write <strong>clean code</strong> avoiding common errors like long non-commenting source statements, long lines, switch statements without default, unnecessary else statements, unused method parameters and so on.</p>
+
+<h3 id="duplicatecodetrends">Duplicate code trends</h3>
+
+<p>This metric shows you code duplication tagging two sections of the source file. It compares them with a set of parameters you specify to give you the results. This helps you with the <a href='http://en.wikipedia.org/wiki/Don' t_repeat_yourself">DRY</a> software development principle.</p>
+
+<p>There's nothing more to say about this metric besides that is possible the <strong>hardest to configure</strong> of all, mostly because the parameters you specify to the program depends on the coding style of the frameworks you use and your team, which may not be the same at all.</p>
+
+<h3 id="sourcelinesofcodecount">Source lines of code count</h3>
+
+<p>I believe that source lines of code count by itself doesn't really mean <em>anything</em>. You can't measure the size or complexity of a software program only by lines of code count, but this metric is really helpful if it's used with the other described above, specially with duplicate code trends. This is possibly the <strong>hardest to analyze</strong> of all, because it depends mostly on the complexity of the project and the team.</p>
+
+<p>If you found this interesting, keep reading the second part of this to learn how to configure these quality metrics.</p>]]></description><link>http://ruenzuo.github.io/static-analysis-on-ios-part-i/</link><guid isPermaLink="false">84c38140-f845-40e9-bd2d-3d165e037461</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sun, 15 Dec 2013 18:21:21 GMT</pubDate></item><item><title><![CDATA[Dream job]]></title><description><![CDATA[<p>I believe that the concept of <em>dream job</em> is something that depends on several factors. For me, as a software engineer, these are the most important ones, not necessarily in a particular order:</p>
 
 <ul>
 <li>Organization goals</li>
