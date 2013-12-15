@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Sun, 15 Dec 2013 19:09:36 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Static Analysis on iOS - Part I]]></title><description><![CDATA[<p>On this post I'll cover static program analysis on iOS. Probably you're already familiar with this concept, if not, this is an analysis performed on the source code in order to get its quality metrics. Remember: <a href='http://en.wikipedia.org/wiki/W._Edwards_Deming' >"You can't improve what you don't measure"</a>.</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io</link><generator>NodeJS RSS Module</generator><lastBuildDate>Sun, 15 Dec 2013 23:39:27 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Static Analysis on iOS - Part I]]></title><description><![CDATA[<p>On this post I'll cover static program analysis on iOS. Probably you're already familiar with this concept, if not, this is an analysis performed on the source code in order to get its quality metrics. Remember: <a href='http://en.wikipedia.org/wiki/W._Edwards_Deming' >"You can't improve what you don't measure"</a>.</p>
 
 <p>I'll be diving this in two parts. On the first I'll cover the metrics I use, briefly describing each one of them. On the second part I'll show you how to configure these quality metrics on a dashboard using Jenkins continuous integration server. For this last part, I'll be referencing <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example' >this</a> repository a lot.</p>
 
@@ -18,7 +18,7 @@
 
 <p>Unit testing is a <strong>fundamental</strong> part of the software development process. As described on Mike Cohn's book "Succeeding with Agile", testing automation efforts on software development should be distributed as shown below:</p>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/test_pyramid.png' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/test-pyramid.png' ></p>
 
 <p>This means that <a href='http://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid' >"unit testing should be the foundation of a solid test automation strategy and as such represents the largest part of the pyramid"</a>. </p>
 
@@ -58,7 +58,7 @@
 
 <h3 id="competitivity">Competitivity</h3>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/hype-cycle.png' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/hype-cycle.png' ></p>
 
 <p>Remain competitive in the market is hard for a software engineer. It's not <strong>only</strong> about skills, position or salary, I think that emerging technologies, shown above on "Gartner's Hype Cycle for Emerging Technologies, 2013", somehow drives business goals and creates new challenges that software engineers must be familiar with and ready to face. For me, it's important to work in an organization that help me to remain myself competitive in all the different aspects mentioned before. The fact is, I never worked in an organization that offered me all mentioned above.</p>
 
@@ -74,7 +74,7 @@
 
 <p>When we finish you'll be dancing like our little friend.</p>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/dancing-android.gif' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/dancing-android.gif' ></p>
 
 <hr />
 
@@ -152,11 +152,11 @@
 
 <p>For this, you need to create and configure two applications on TestFlight:</p>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/testflight.png' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/testflight.png' ></p>
 
 <p>Get the <code>api_token</code> and <code>team_token</code> from TestFlight and create the desired number of <code>distribution_lists</code>. You can find this option on the bottom of the People section of the webpage:</p>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/distribution-lists.png' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/distribution-lists.png' ></p>
 
 <p>Remember that you can specify if you want to <code>notify</code> those users about a new build. Another cool thing you can do is to add <code>notes</code> for the build information, here you can use Travis <a href='http://about.travis-ci.org/docs/user/ci-environment/' #Environment-variables">environment variables</a> to add interesting information to those notes.</p>
 
@@ -191,7 +191,7 @@
 
 <p>Probably you're familiar with this:</p>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/scrum-explained.png' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/scrum-explained.png' ></p>
 
 <p>That is <a href='http://www.scrumalliance.org/why-scrum' >Scrum</a>, but I will not explain this here, we will only focus on the last two graphs: <em>2-4 week sprint</em> and <em>potentially shippable product increment</em>. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>. </p>
 
@@ -237,7 +237,7 @@
 
 <p>On the second, you have a set of practices and some of them are really hard to get done right, like: test driven development and coding standards are really advanced stuff for junior software developers, continuous integration and small releases are somehow difficult to accomplish depending on your IT infrastructure, collective ownership could be a nightmare done wrong. </p>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/xp-practices.png' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/xp-practices.png' ></p>
 
 <p>You get the idea.</p>
 
@@ -312,6 +312,6 @@
 
 <h3 id="closing">Closing</h3>
 
-<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/99114459/hello-world.png' ></p>
+<p class="image-center"><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/hello-world.png' ></p>
 
 <p>So here I am. My name is Renzo Crisóstomo and on this blog I'll share with you all these experiences, I hope you enjoy reading this as much I enjoy writing it.</p>]]></description><link>http://ruenzuo.github.io/hello-world/</link><guid isPermaLink="false">b2c8b04b-f895-4f7c-acfa-49c47ccfc659</guid><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sun, 10 Nov 2013 04:18:22 GMT</pubDate></item></channel></rss>
