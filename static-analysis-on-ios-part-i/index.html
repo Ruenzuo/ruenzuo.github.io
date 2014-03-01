@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    <title>Static Analysis on iOS - Part I</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Static Analysis on iOS - Part I">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Static Analysis on iOS - Part I">
+    <meta property="og:description" content="">
+
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://127.0.0.1:2368/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=2ce72af248" />
+
+    
+    <meta name="generator" content="Ghost 0.4" />
+<link rel="alternate" type="application/rss+xml" title="Ruenzuo.io" href="../rss/index.html">
+<link rel="canonical" href="http://ruenzuo.github.io/static-analysis-on-ios-part-i/" />
+
+</head>
+<body class="post-template tag-ios no-js">
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    <header class="panel-cover panel-cover--collapsed" >
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+        <h1 class="panel-cover__title panel-title"><a href="http://ruenzuo.github.io" title="link to homepage for Ruenzuo.io">Ruenzuo.io</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS, Android and Agile.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="../index.html#blog" title="link to Ruenzuo.io blog" class="blog-button">Blog</a></li>
+            </ul>
+          </nav>
+
+          
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+
+  <!-- Twitter -->
+  <li class="navigation__item">
+    <a href="http://twitter.com/ruenzuo" title="@Ruenzuo on Twitter">
+      <i class='icon icon-social-twitter'></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+
+    <!-- Dribbble -->
+    <li class="navigation__item">
+      <a href="https://github.com/ruenzuo" title="Ruenzuo on GitHub">
+        <i class='icon icon-social-github'></i>
+        <span class="label">GitHub</span>
+      </a>
+    </li>
+
+    <!-- Email -->
+    <li class="navigation__item">
+      <a href="mailto:renzo.crisostomo@me.com" title="Email renzo.crisostomo@me.com">
+        <i class='icon icon-mail'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+
+  </ul>
+</nav>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
+
+
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="15 Dec 2013" class="post-meta__date date">15 Dec 2013</time> &#8226; <span class="post-meta__tags tags">on iOS</span>
+        <!--<span class="post-meta__author author"><img src="" alt="profile image for Renzo Crisóstomo" class="avatar post-meta__avatar" /> by Renzo Crisóstomo</span>-->
+      </div>
+      <h1 class="post-title">Static Analysis on iOS - Part I</h1>
+    </header>
+
+    <section class="post tag-ios">
+      <p>On this post I'll cover static program analysis on iOS. Probably you're already familiar with this concept, if not, this is an analysis performed on the source code in order to get its quality metrics. Remember: <a href="http://en.wikipedia.org/wiki/W._Edwards_Deming">"You can't improve what you don't measure"</a>.</p>
+
+<p>I'll be diving this in two parts. On the first I'll cover the metrics I use, briefly describing each one of them. On the second part I'll show you how to configure these quality metrics on a dashboard using Jenkins continuous integration server. For this last part, I'll be referencing <a href="https://github.com/Ruenzuo/ios-ci-jenkins-example">this</a> repository a lot.</p>
+
+<p>The quality metrics described below are:</p>
+
+<ul>
+<li>Test results and Code coverage</li>
+<li>PMD analysis results</li>
+<li>Duplicate code trends</li>
+<li>Source lines of code count</li>
+</ul>
+
+<h3 id="testresultsandcodecoverage">Test results and Code coverage</h3>
+
+<p>Unit testing is a <strong>fundamental</strong> part of the software development process. As described on Mike Cohn's book "Succeeding with Agile", testing automation efforts on software development should be distributed as shown below:</p>
+
+<p><center> <br />
+<img src="https://dl.dropboxusercontent.com/u/12352209/Blog/test-pyramid.png" alt="test-pyramid" />
+</center></p>
+
+<p>This means that <a href="http://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid">"unit testing should be the foundation of a solid test automation strategy and as such represents the largest part of the pyramid"</a>.</p>
+
+<p>This is why this two metrics are are important to me, test results helps you to identify which builds have been broken and coverage gives you interesting information about how much of your code is being covered by your unit tests.</p>
+
+<h3 id="pmdanalysisresults">PMD analysis results</h3>
+
+<p><a href="http://pmd.sourceforge.net/">PMD</a> is a source code analyzer. It finds common programming flaws like unused variables, empty catch blocks, unnecessary object creation, and so forth. Currently, PMD doesn't have official support for ObjC, but on the second part of this post I'll cover how to get through this.</p>
+
+<p>I found this metrics interesting because it helps me to write <strong>clean code</strong> avoiding common errors like long non-commenting source statements, long lines, switch statements without default, unnecessary else statements, unused method parameters and so on.</p>
+
+<h3 id="duplicatecodetrends">Duplicate code trends</h3>
+
+<p>This metric shows you code duplication tagging two sections of the source file. It compares them with a set of parameters you specify to give you the results. This helps you with the <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">DRY</a> software development principle.</p>
+
+<p>There's nothing more to say about this metric besides that is possible the <strong>hardest to configure</strong> of all, mostly because the parameters you specify to the program depends on the coding style of the frameworks you use and your team, which may not be the same at all.</p>
+
+<h3 id="sourcelinesofcodecount">Source lines of code count</h3>
+
+<p>I believe that source lines of code count by itself doesn't really mean <em>anything</em>. You can't measure the size or complexity of a software program only by lines of code count, but this metric is really helpful if it's used with the other described above, specially with duplicate code trends. This is possibly the <strong>hardest to analyze</strong> of all, because it depends mostly on the complexity of the project and the team.</p>
+
+<p>If you found this interesting, keep reading the second part of this to learn how to configure these quality metrics.</p>
+    </section>
+
+  </article>
+
+  <section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'ruenzuoio'; // required: replace example with your forum shortname
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+
+
+            <footer class="footer">
+    <span class="footer__copyright">&copy; 2014. All rights reserved.</span>
+    <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+    <span class="footer__copyright">Proudly published with <a href="http://ghost.org" title="link to Ghost website">Ghost</a></span>
+</footer>
+        </div>
+    </div>
+
+    
+    <script src="../shared/vendor/jquery/jquery.js?v=2ce72af248"></script>
+
+    
+    <script type="text/javascript" src="../assets/js/main.js?v=2ce72af248"></script>
+
+</body>
+</html>

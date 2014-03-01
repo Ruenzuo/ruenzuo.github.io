@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io/</link><generator>Ghost v0.4.1</generator><lastBuildDate>Sat, 01 Mar 2014 12:23:28 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Static Analysis on iOS - Part I]]></title><description><![CDATA[<p>On this post I'll cover static program analysis on iOS. Probably you're already familiar with this concept, if not, this is an analysis performed on the source code in order to get its quality metrics. Remember: <a href='http://en.wikipedia.org/wiki/W._Edwards_Deming' >"You can't improve what you don't measure"</a>.</p>
+
+<p>I'll be diving this in two parts. On the first I'll cover the metrics I use, briefly describing each one of them. On the second part I'll show you how to configure these quality metrics on a dashboard using Jenkins continuous integration server. For this last part, I'll be referencing <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example' >this</a> repository a lot.</p>
+
+<p>The quality metrics described below are:</p>
+
+<ul>
+<li>Test results and Code coverage</li>
+<li>PMD analysis results</li>
+<li>Duplicate code trends</li>
+<li>Source lines of code count</li>
+</ul>
+
+<h3 id="testresultsandcodecoverage">Test results and Code coverage</h3>
+
+<p>Unit testing is a <strong>fundamental</strong> part of the software development process. As described on Mike Cohn's book "Succeeding with Agile", testing automation efforts on software development should be distributed as shown below:</p>
+
+<p><center> <br />
+<img src='https://dl.dropboxusercontent.com/u/12352209/Blog/test-pyramid.png'  alt="test-pyramid" />
+</center></p>
+
+<p>This means that <a href='http://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid' >"unit testing should be the foundation of a solid test automation strategy and as such represents the largest part of the pyramid"</a>.</p>
+
+<p>This is why this two metrics are are important to me, test results helps you to identify which builds have been broken and coverage gives you interesting information about how much of your code is being covered by your unit tests.</p>
+
+<h3 id="pmdanalysisresults">PMD analysis results</h3>
+
+<p><a href='http://pmd.sourceforge.net/' >PMD</a> is a source code analyzer. It finds common programming flaws like unused variables, empty catch blocks, unnecessary object creation, and so forth. Currently, PMD doesn't have official support for ObjC, but on the second part of this post I'll cover how to get through this.</p>
+
+<p>I found this metrics interesting because it helps me to write <strong>clean code</strong> avoiding common errors like long non-commenting source statements, long lines, switch statements without default, unnecessary else statements, unused method parameters and so on.</p>
+
+<h3 id="duplicatecodetrends">Duplicate code trends</h3>
+
+<p>This metric shows you code duplication tagging two sections of the source file. It compares them with a set of parameters you specify to give you the results. This helps you with the <a href='http://en.wikipedia.org/wiki/Don' t_repeat_yourself">DRY</a> software development principle.</p>
+
+<p>There's nothing more to say about this metric besides that is possible the <strong>hardest to configure</strong> of all, mostly because the parameters you specify to the program depends on the coding style of the frameworks you use and your team, which may not be the same at all.</p>
+
+<h3 id="sourcelinesofcodecount">Source lines of code count</h3>
+
+<p>I believe that source lines of code count by itself doesn't really mean <em>anything</em>. You can't measure the size or complexity of a software program only by lines of code count, but this metric is really helpful if it's used with the other described above, specially with duplicate code trends. This is possibly the <strong>hardest to analyze</strong> of all, because it depends mostly on the complexity of the project and the team.</p>
+
+<p>If you found this interesting, keep reading the second part of this to learn how to configure these quality metrics.</p>]]></description><link>http://ruenzuo.github.io/static-analysis-on-ios-part-i/</link><guid isPermaLink="false">56cdceff-0956-4370-a411-2d52279967e1</guid><category><![CDATA[iOS]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sun, 15 Dec 2013 17:20:00 GMT</pubDate></item><item><title><![CDATA[Dream job]]></title><description><![CDATA[<p>I believe that the concept of <em>dream job</em> is something that depends on several factors. For me, as a software engineer, these are the most important ones, not necessarily in a particular order:</p>
+
+<ul>
+<li>Organization goals</li>
+<li>Competitivity</li>
+<li>Work environment</li>
+</ul>
+
+<p>Please note that I respect every point of view on this subject, my only intention here is to share my own view.</p>
+
+<hr />
+
+<h3 id="organizationgoals">Organization goals</h3>
+
+<p>Everyone has personal goals in their career, but I think that organization goals are just as important as ours. Both should be <strong>aligned</strong>, otherwise you won't find a suitable environment to accomplish your own goals. For instance, I once worked for a software development company that one day decided to develop a video game for iOS. At the time, I felt really excited learning new things all days: graphics engine, physics engine, sound positioning, but soon I realize that this wasn't actually my thing. I'm more interested on business applications, so I quit the job.</p>
+
+<h3 id="competitivity">Competitivity</h3>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/hype-cycle.png'  alt="hype-cycle" /></p>
+
+<p>Remain competitive in the market is hard for a software engineer. It's not <strong>only</strong> about skills, position or salary, I think that emerging technologies, shown above on "Gartner's Hype Cycle for Emerging Technologies, 2013", somehow drives business goals and creates new challenges that software engineers must be familiar with and ready to face. For me, it's important to work in an organization that help me to remain myself competitive in all the different aspects mentioned before. The fact is, I never worked in an organization that offered me all mentioned above.</p>
+
+<h3 id="workenvironment">Work environment</h3>
+
+<p>Last but not least, a good work environment is really important because most of the tasks I do in my work require <strong>mental</strong> effort and creativity, like software development, design and testing. Working in an environment that has a lot of tension and conflicts is not suitable for creativity and often produces mental blocks, which means a complete incapacity of being productive at work if you happen to use your mind to work, I'm sure you're familiar with this. On my first job as a software developer I found myself on a chaotic environment and this was all produced by the lack of a software development methodology. That's where I learnt the value of it. Naturally I quit the job and I promised myself never again work for a company that doesn't back up their work with a software development methodology.</p>
+
+<h3 id="closing">Closing</h3>
+
+<p>I think that probably on the next years this list would be different, but nevertheless I wanted to share this with you now because I think there are a lot of people out there trying to figure out why their employees are leaving their companies. Truth be told: every single job I left was because of these factors. I'm still looking for my <em>dream job</em>. Wish me luck.</p>]]></description><link>http://ruenzuo.github.io/dream-job/</link><guid isPermaLink="false">b780ef1f-f781-4045-b6a0-436af7fe2265</guid><category><![CDATA[Personal]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Fri, 06 Dec 2013 15:25:00 GMT</pubDate></item><item><title><![CDATA[Continuous Delivery on Android - Part II]]></title><description><![CDATA[<p>This is the second part of my post about continuous delivery setup on Android using <a href='http://www.gradle.org/' >Gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. For this part, I'll be referencing this <a href='https://github.com/Ruenzuo/android-cd-travis-example' >repository</a>. If you're interested in what is continuous delivery or what are the motivations and goals of it be sure to check the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-i/' >first part</a> of this post.</p>
+
+<hr />
+
+<h3 id="gradle">Gradle</h3>
+
+<p>Gradle has been chosen by Google's ADT team to be Android's <a href='http://tools.android.com/tech-docs/new-build-system/user-guide' >next build system</a> so Ant support will be dropped sometime in the future. The following assumes that you have basic knowledge about Android's gradle plugin and Groovy domain-specific language.</p>
+
+<p>I'll make a brief explanation of my <code>build.gradle</code> file shown below in 3 sections:</p>
+
+<ul>
+<li>Build configurations</li>
+<li>Product flavors</li>
+<li>Dependencies</li>
+</ul>
+
+<script src='https://gist.github.com/Ruenzuo/7668340.js' ></script>
+
+<h4 id="buildconfigurations">Build Configurations</h4>
+
+<p>For this example, I'm using <code>targetSdkVersion 18</code> and <code>buildToolsVersion "18.0.1"</code>.</p>
+
+<p>I'm setting <code>debuggable true</code> and <code>zipAlign true</code> on the default debug build type because this will be the APK I'll be delivering with TestFlight.</p>
+
+<h4 id="productflavors">Product flavors</h4>
+
+<p>I'm adding two product flavors <code>free</code> and <code>paid</code>. You need to configure your project <code>src</code> directory to something <a href='https://github.com/Ruenzuo/android-cd-travis-example/tree/master/WeatherApp/src' >like</a> this so gradle can grab the correct files for compiling each version. You're free to add different resources for each version, for instance, you can add <strong>different application icons</strong> (<a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/free/res/drawable-hdpi/ic_launcher.png' >free</a> and <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/paid/res/drawable-hdpi/ic_launcher.png' >paid</a> icons) on each <code>res</code> directory.</p>
+
+<p>For each product flavor, I'm configuring a different <code>packageName</code>, in order to be able to <strong>install both versions on the same device</strong>, and adding a <code>buildConfig</code> variable which can be used from anywhere on the project, for example: to <strong>enable or disable features</strong> on the <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/main/java/com/ruenzuo/weatherapp/base/CitiesBaseActivity.java' #L49">base code</a> or <strong>to test specific features for each build</strong> on your <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/WeatherApp/src/instrumentTest/java/com.ruenzuo.weatherapp.test/CitiesActivityFunctionalTests.java' #L28">tests</a>.</p>
+
+<h4 id="dependencies">Dependencies</h4>
+
+<p>With gradle, you can also specify specific product flavor dependencies, to make APK lighter, and exclude transitive dependencies, so compiler doesn't complain about duplicated files on compilation. In this example, we don't need to compile <code>libs/GoogleAdMobAdsSdk-6.4.1.jar</code> on paid version because its not referenced.</p>
+
+<h3 id="travis">Travis</h3>
+
+<p>Travis is a is a hosted continuous integration service for the open source community. It's fully integrated with GitHub. The following assumes that you have basic knowledge about Travis, unix shell and Android command line tools.</p>
+
+<p>I'll explain the most important parts of my <code>.travis.yml</code> file shown below in 5 sections:</p>
+
+<ul>
+<li>Branches</li>
+<li>Before install</li>
+<li>Install</li>
+<li>Before script</li>
+<li>Script</li>
+</ul>
+
+<script src='https://gist.github.com/Ruenzuo/7668407.js' ></script>
+
+<h4 id="branches">Branches</h4>
+
+<p>In this part, I'm telling Travis to <strong>build only master branch</strong>. Any commit on the master branch will trigger a build, but this can be avoided by adding <code>[ci skip]</code> to the <a href='https://github.com/Ruenzuo/android-cd-travis-example/commit/5a5f37b18bd822075f33d00087ceb217cf0e0798' >commit message</a>.</p>
+
+<h4 id="beforeinstall">Before install</h4>
+
+<p>Sadly, Travis doesn't offer an Android development environment so we need to install everything by our own. This is done on <code>before_install</code> part of the script.</p>
+
+<h4 id="install">Install</h4>
+
+<p>I'm skipping the default <code>install</code> behaivour of Travis described <a href='http://docs.travis-ci.com/user/languages/java/' #Projects-Using-Gradle">here</a>, because I really don't need it, I'm using gradle wrapper which I think it's the best.</p>
+
+<h4 id="beforescript">Before script</h4>
+
+<p>On <code>before_script</code> I'm using <a href='https://github.com/Ruenzuo/android-cd-travis-example/blob/master/Scripts/wait_for_emulator.sh' >this</a> script to launch the simulator and wait until it's ready, then I'm using <code>adb shell input keyevent 82 &amp;</code> which gives the virtual device an unlock message.</p>
+
+<h4 id="script">Script</h4>
+
+<p>Finally, on <code>script</code> I'm using the gradle wrappler to run instrument tests, this task will also generate debug APK both for free and paid flavors on the following path <code>$TRAVIS_BUILD_DIR/WeatherApp/build/apk/</code>. The rest of the script will be described on the next topic.</p>
+
+<h3 id="testflight">TestFlight</h3>
+
+<p>TestFlight is a free platform used to distribute beta and internal iOS/Android applications to team members over-the-air. The following assumes that you have basic knowledge about the service.</p>
+
+<p>As we seen on the last section <code>script</code> of the <code>.travis.yml</code> file, I'm using <code>curl</code> to upload both APKs to TestFlight API adding <code>distribution_lists</code> parameter so <strong>each version is distributed to a different set of recipients</strong>.</p>
+
+<p>For this, you need to create and configure two applications on TestFlight:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/testflight.png'  alt="testflight" /></p>
+
+<p>Get the <code>api_token</code> and <code>team_token</code> from TestFlight and create the desired number of <code>distribution_lists</code>. You can find this option on the bottom of the People section of the webpage:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/distribution-lists.png'  alt="distribution-lists" /></p>
+
+<p>Remember that you can specify if you want to <code>notify</code> those users about a new build. Another cool thing you can do is to add <code>notes</code> for the build information, here you can use Travis <a href='http://docs.travis-ci.com/user/ci-environment/' #Environment-variables">environment variables</a> to add interesting information to those notes.</p>
+
+<h3 id="closing">Closing</h3>
+
+<p>Hopefully you get everything right. But if not, just send me an an email to <a href='mailto:renzo.crisostomo@me.com' >renzo.crisostomo@me.com</a>. Good luck and thanks for reading.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-part-ii/</link><guid isPermaLink="false">25e06908-3cfd-4a1c-8ab3-2ddbdb683003</guid><category><![CDATA[Android]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Tue, 26 Nov 2013 22:15:00 GMT</pubDate></item><item><title><![CDATA[Continuous Delivery on Android - Part I]]></title><description><![CDATA[<p>Today I'll share a continuous delivery setup on Android using <a href='http://www.gradle.org/' >Gradle</a>, <a href='https://travis-ci.org/' >Travis</a> and <a href='https://www.testflightapp.com/' >TestFlight</a>. I'm assuming that you are familiar with those tools, so I'll be covering all these in the following topics:</p>
+
+<p>Part I:</p>
+
+<ul>
+<li>What is continuous delivery?</li>
+<li>Motivations and goals</li>
+</ul>
+
+<p>Part II:</p>
+
+<ul>
+<li>Gradle</li>
+<li>Travis</li>
+<li>TestFlight</li>
+</ul>
+
+<p>I'm dividing this in two parts because of course divide and conquer.</p>
+
+<hr />
+
+<h3 id="whatiscontinuousdelivery">What is continuous delivery?</h3>
+
+<p>Continuous delivery is a design practice used in software development to automate and improve the process of software delivery. Yes, that's <a href='http://en.wikipedia.org/wiki/Continuous_delivery' >Wikipedia</a>.</p>
+
+<p>Probably you're familiar with this:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/scrum-explained.png'  alt="scrum-explained" /></p>
+
+<p>That is <a href='http://www.scrumalliance.org/why-scrum' >Scrum</a>, but I will not explain this here, we will only focus on the last two graphs: 2-4 week sprint and potentially shippable product increment. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>.</p>
+
+<h3 id="motivationsandgoals">Motivations and goals</h3>
+
+<p>Working on mobile projects means that probably on of your main goals is time to market, because let's face it: mobile application development is probably one of the most competitive environments on software right now. So, in order to arrive earlier to the party, you need to decide which features will be on your first release.</p>
+
+<p>One interesting approach to do this, and this one is actually <a href='https://developers.facebook.com/blog/post/2013/03/12/facebook-mobile-developer-conference-2013/' >being used by Facebook</a>, is to have multiple version of the same application each one with different features. These versions are often distributed to different quality assurance teams. You think this looks complicated? Well, it's not!</p>
+
+<p>Finally, these will be our goals:</p>
+
+<ul>
+<li>Build different versions of an Android application using the same code base.</li>
+<li>Each version should have a determined set of features and those features should be tested individually with instrumentation framework.</li>
+<li>Use different package identifiers and application icons so we can have multiple versions of the application installed and tested on the same devices.</li>
+<li>Distribute those versions individually on a continuous delivery environment.</li>
+<li>Trigger distributions based on commits on a specific branch.</li>
+<li>Each version should be distributed to a different set of recipients.</li>
+</ul>
+
+<p>I guess that looks interesting, right? Keep reading the <a href='http://ruenzuo.github.io/continuous-delivery-on-android-part-ii/' >second part</a> of this if you want to learn how to do all these.</p>]]></description><link>http://ruenzuo.github.io/continuous-delivery-on-android-part-i/</link><guid isPermaLink="false">1c99b484-77d6-4583-83e4-abcd475b30f6</guid><category><![CDATA[Android]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Mon, 25 Nov 2013 14:20:00 GMT</pubDate></item><item><title><![CDATA[Three random thoughts on indie software development]]></title><description><![CDATA[<p>I have been thinking on three things about software development that I believe are somehow related:</p>
+
+<ul>
+<li>What they <em>don't tell you</em> about Agile... Or do they?</li>
+<li>You can't do <em>everything</em> on your own... Or can you?</li>
+<li>What's the best way to do everything <em>on your own</em>?
+You may be wondering how they are related... Let me explain myself.</li>
+</ul>
+
+<hr />
+
+<h3 id="whattheydonttellyouaboutagile">What they don't tell you about Agile</h3>
+
+<p>Agile is <strong>hard</strong>. Yes, we all have been lied about it. Let's analyze for instance two agile methodologies:</p>
+
+<ul>
+<li>Scrum</li>
+<li>eXtreme Programming</li>
+</ul>
+
+<p>On the first, you have three main roles: scrum master, product owner and the team, let's focus on the last one. As a team member, you should be involved on several tasks performing multiple roles in different disciplines such as requirements, design, construction, testing, maintenance and configuration management. Specialization is not forbidden, but multi-disciplinary teams are encourage.</p>
+
+<p>On the second, you have a set of practices and some of them are really hard to get done right, like: test driven development and coding standards are really advanced stuff for junior software developers, continuous integration and small releases are somehow difficult to accomplish depending on your IT infrastructure, collective ownership could be a nightmare done wrong.</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/xp-practices.png'  alt="xp-practices" /></p>
+
+<p>You get the idea.</p>
+
+<h3 id="youcantdoeverythingonyourown">You can't do everything on your own</h3>
+
+<p>You can't. I think some of us are getting the wrong idea about indie software development... What's indie on these days anyways? I'll explain this with two successful independent software development <em>teams</em>:</p>
+
+<ul>
+<li><a href='http://tapbots.com/company/' >Tapbots</a>, creators of the amazing iOS app Tweetbot.</li>
+<li><a href='http://supermeatboy.com/about/' >Team Meat</a>, creators of the video game hit Super Meat Boy.
+Both teams are conformed by a developer and a designer, so it's clear that those aren't lone wolves and I think there's a reason about that. Most tasks on software development and design must be reviewed by different points of view, and it's so easy to miss a thing... Also, development and testing tasks should be done by someone different, otherwise is a disaster. If you want to learn more on how this teams are organized, I recommend reading both teams blogs and watch this awesome <a href='http://www.indiegamethemovie.com/' >movie</a>.</li>
+</ul>
+
+<p>What's the best way to do everything on <strong>your own</strong></p>
+
+<p>Is Agile the best way? I think it is the right direction. I have been told that Apple apps teams are conformed by 3 people: a developer, a designer and a marketing analyst working with a methodology very similar to scrum. And reading both Tapbots and Team Meat blogs got me an idea on how are they organized, which is again very similar to scrum.</p>
+
+<p>Scrum isn't recommended for teams of two people and I couldn't find information regarding an agile methodology for teams conformed by two people, so there's an interesting field of research there.</p>
+
+<p>How are these three thoughts related?</p>
+
+<ul>
+<li>Independent software development it's <strong>hard</strong>. You have to fulfill multi-disciplinary roles and you have to be the best on each one, pretty much like doing agile, the right way.</li>
+<li>You can't do everything on your own, but it seems that there is a kind of magic formula with two people teams.</li>
+<li>There's an interesting field of research on this two people independent software development teams using kind of agile practices.</li>
+</ul>
+
+<p>All these has my attention for further research, so I'll keep you posted on this when I'll have more information.</p>]]></description><link>http://ruenzuo.github.io/three-random-thoughts-on-indie-software-development/</link><guid isPermaLink="false">67f7fd46-5717-4fd6-bc77-1b410481e5d4</guid><category><![CDATA[Agile]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Mon, 25 Nov 2013 09:33:00 GMT</pubDate></item><item><title><![CDATA[Hello, world]]></title><description><![CDATA[<p>It's been a little less than six years since my first "Hello, world". I know it's not much, but still, it feels great to start this blog in order to share my experience through this time. I really hope someone finds something useful here.</p>
+
+<p>I'll start this by telling you a story in five small chapters:</p>
+
+<ul>
+<li>The best</li>
+<li>The first</li>
+<li>The naive</li>
+<li>The scared</li>
+<li>The dreamer</li>
+</ul>
+
+<p>I promise this won't take too long.</p>
+
+<hr />
+
+<h3 id="thebest">The best</h3>
+
+<p>I started my software engineering career on April 2008. I remember my first two programming courses, loved those! And I have to say, I was pretty good at them. In fact... I felt like one of the best students and it was awesome. I never was the best at anything before!</p>
+
+<h3 id="thefirst">The first</h3>
+
+<p>I don't remember exactly, I think it was mid 2009 when I read an article on Gizmodo about some mobile applications on a new platform making a lot of money only with one button and a thousand of fart sounds. Then I heard inside my head: "Hey! Listen! You can program that on C++, how different could it be?"</p>
+
+<h3 id="thenaive">The naive</h3>
+
+<p>On February 2010 I started my first job as a software developer doing Objective-C and eventually some Java programming for a <a href='http://onlinestudioproductions.com/' >startup</a> at the time. It was pretty chaotic, but still felt great being paid for doing what I loved.</p>
+
+<p>Then I published my second iOS application (I don't want to write about the first, I don't even remember that) on iTunes App Store around July 2010: <a href='http://www.appsafari.com/music/11565/iocarina/' >iOcarina</a>. That went really great while it lasted, I bought my first car with that money and I have to thank <a href='https://twitter.com/cavf88' >@cavf88</a> for that.</p>
+
+<h3 id="thescared">The scared</h3>
+
+<p>Everything until here sounds great, isn't it? Well it goes ugly from here. Nintendo wasn't happy with me using their copyrighted sounds so I had to remove my app from the store. Then, chaotic awesome went chaotic awful at work, so I quit. And it wasn't easy to quit that job, I'll tell you more about that some other time.</p>
+
+<p>Then I felt confused, had a couple ideas for apps at my head but the App Store market wasn't the same anymore. I got a job in a couple of places but I really didn't enjoyed those. Was this really what I want for the rest of my live?</p>
+
+<p>On May 2012 I took a Certified Scrum Master course thanks to <a href='https://twitter.com/cegonya' >@Cegonya</a> and I loved it! Suddenly I saw all the answers I was looking for: that was the way I wanted to work for the rest of my live, definitely.</p>
+
+<h3 id="thedreamer">The dreamer</h3>
+
+<p>On February 2013 I started working on a truly <a href='http://www.tallertechnologies.com/' >agile organization</a>. This was awesome! Scrum, eXtreme Programming and Kanban. I worked with the best practices on software development: continuous integration, continuous delivery, unit testing and static code analysis. I also learned about the importance of open source software development and even started contributing to some small projects! And all these motivate me to start this blog.</p>
+
+<h3 id="closing">Closing</h3>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/hello-world.png'  alt="hello-world" /></p>
+
+<p>So here I am. My name is Renzo Crisóstomo and on this blog I'll share with you all these experiences, I hope you enjoy reading this as much I enjoy writing it.</p>]]></description><link>http://ruenzuo.github.io/hello-world/</link><guid isPermaLink="false">292cf062-8b0d-4cbc-895d-f9c1d9c81643</guid><category><![CDATA[Personal]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sat, 09 Nov 2013 14:30:00 GMT</pubDate></item></channel></rss>
