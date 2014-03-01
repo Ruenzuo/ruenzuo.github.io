@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     
-    <title>Continuous Delivery on Android - Part I</title>
+    <title>Three random thoughts on indie software development</title>
 
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -16,11 +16,11 @@
     <meta name="description" content="">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Continuous Delivery on Android - Part I">
+    <meta name="twitter:title" content="Three random thoughts on indie software development">
     <meta name="twitter:description" content="">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Continuous Delivery on Android - Part I">
+    <meta property="og:title" content="Three random thoughts on indie software development">
     <meta property="og:description" content="">
 
     <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon">
@@ -32,10 +32,10 @@
     
     <meta name="generator" content="Ghost 0.4" />
 <link rel="alternate" type="application/rss+xml" title="Ruenzuo.io" href="../rss/index.html">
-<link rel="canonical" href="http://ruenzuo.github.io/continuous-delivery-on-android-part-i/" />
+<link rel="canonical" href="http://ruenzuo.github.io/three-random-thoughts-on-indie-software-development/" />
 
 </head>
-<body class="post-template tag-android no-js">
+<body class="post-template tag-agile no-js">
 
     <span class="mobile btn-mobile-menu">
         <i class="icon icon-list btn-mobile-menu__icon"></i>
@@ -117,62 +117,66 @@
 
     <header class="post-header">
       <div class="post-meta">
-        <time datetime="25 Nov 2013" class="post-meta__date date">25 Nov 2013</time> &#8226; <span class="post-meta__tags tags">on Android</span>
+        <time datetime="25 Nov 2013" class="post-meta__date date">25 Nov 2013</time> &#8226; <span class="post-meta__tags tags">on Agile</span>
         <!--<span class="post-meta__author author"><img src="" alt="profile image for Renzo Crisóstomo" class="avatar post-meta__avatar" /> by Renzo Crisóstomo</span>-->
       </div>
-      <h1 class="post-title">Continuous Delivery on Android - Part I</h1>
+      <h1 class="post-title">Three random thoughts on indie software development</h1>
     </header>
 
-    <section class="post tag-android">
-      <p>Today I'll share a continuous delivery setup on Android using <a href="http://www.gradle.org/">Gradle</a>, <a href="https://travis-ci.org/">Travis</a> and <a href="https://www.testflightapp.com/">TestFlight</a>. I'm assuming that you are familiar with those tools, so I'll be covering all these in the following topics:</p>
-
-<p>Part I:</p>
+    <section class="post tag-agile">
+      <p>I have been thinking on three things about software development that I believe are somehow related:</p>
 
 <ul>
-<li>What is continuous delivery?</li>
-<li>Motivations and goals</li>
+<li>What they <em>don't tell you</em> about Agile... Or do they?</li>
+<li>You can't do <em>everything</em> on your own... Or can you?</li>
+<li>What's the best way to do everything <em>on your own</em>?
+You may be wondering how they are related... Let me explain myself.</li>
 </ul>
-
-<p>Part II:</p>
-
-<ul>
-<li>Gradle</li>
-<li>Travis</li>
-<li>TestFlight</li>
-</ul>
-
-<p>I'm dividing this in two parts because of course divide and conquer.</p>
 
 <hr />
 
-<h3 id="whatiscontinuousdelivery">What is continuous delivery?</h3>
+<h3 id="whattheydonttellyouaboutagile">What they don't tell you about Agile</h3>
 
-<p>Continuous delivery is a design practice used in software development to automate and improve the process of software delivery. Yes, that's <a href="http://en.wikipedia.org/wiki/Continuous_delivery">Wikipedia</a>.</p>
-
-<p>Probably you're familiar with this:</p>
-
-<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/scrum-explained.png" alt="scrum-explained" /></p>
-
-<p>That is <a href="http://www.scrumalliance.org/why-scrum">Scrum</a>, but I will not explain this here, we will only focus on the last two graphs: 2-4 week sprint and potentially shippable product increment. A sprint is an iteration, very similar to what we find on other agile software development methodologies and the goal of the sprint execution is a potentially shippable product increment. But, two weeks seems like a really short period of time for doing requirements, design, construction and release tasks for a set of features, so in order to get the most of it, we do <strong>automation</strong>.</p>
-
-<h3 id="motivationsandgoals">Motivations and goals</h3>
-
-<p>Working on mobile projects means that probably on of your main goals is time to market, because let's face it: mobile application development is probably one of the most competitive environments on software right now. So, in order to arrive earlier to the party, you need to decide which features will be on your first release.</p>
-
-<p>One interesting approach to do this, and this one is actually <a href="https://developers.facebook.com/blog/post/2013/03/12/facebook-mobile-developer-conference-2013/">being used by Facebook</a>, is to have multiple version of the same application each one with different features. These versions are often distributed to different quality assurance teams. You think this looks complicated? Well, it's not!</p>
-
-<p>Finally, these will be our goals:</p>
+<p>Agile is <strong>hard</strong>. Yes, we all have been lied about it. Let's analyze for instance two agile methodologies:</p>
 
 <ul>
-<li>Build different versions of an Android application using the same code base.</li>
-<li>Each version should have a determined set of features and those features should be tested individually with instrumentation framework.</li>
-<li>Use different package identifiers and application icons so we can have multiple versions of the application installed and tested on the same devices.</li>
-<li>Distribute those versions individually on a continuous delivery environment.</li>
-<li>Trigger distributions based on commits on a specific branch.</li>
-<li>Each version should be distributed to a different set of recipients.</li>
+<li>Scrum</li>
+<li>eXtreme Programming</li>
 </ul>
 
-<p>I guess that looks interesting, right? Keep reading the <a href="http://ruenzuo.github.io/continuous-delivery-on-android-part-ii/">second part</a> of this if you want to learn how to do all these.</p>
+<p>On the first, you have three main roles: scrum master, product owner and the team, let's focus on the last one. As a team member, you should be involved on several tasks performing multiple roles in different disciplines such as requirements, design, construction, testing, maintenance and configuration management. Specialization is not forbidden, but multi-disciplinary teams are encourage.</p>
+
+<p>On the second, you have a set of practices and some of them are really hard to get done right, like: test driven development and coding standards are really advanced stuff for junior software developers, continuous integration and small releases are somehow difficult to accomplish depending on your IT infrastructure, collective ownership could be a nightmare done wrong.</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/xp-practices.png" alt="xp-practices" /></p>
+
+<p>You get the idea.</p>
+
+<h3 id="youcantdoeverythingonyourown">You can't do everything on your own</h3>
+
+<p>You can't. I think some of us are getting the wrong idea about indie software development... What's indie on these days anyways? I'll explain this with two successful independent software development <em>teams</em>:</p>
+
+<ul>
+<li><a href="http://tapbots.com/company/">Tapbots</a>, creators of the amazing iOS app Tweetbot.</li>
+<li><a href="http://supermeatboy.com/about/">Team Meat</a>, creators of the video game hit Super Meat Boy.
+Both teams are conformed by a developer and a designer, so it's clear that those aren't lone wolves and I think there's a reason about that. Most tasks on software development and design must be reviewed by different points of view, and it's so easy to miss a thing... Also, development and testing tasks should be done by someone different, otherwise is a disaster. If you want to learn more on how this teams are organized, I recommend reading both teams blogs and watch this awesome <a href="http://www.indiegamethemovie.com/">movie</a>.</li>
+</ul>
+
+<p>What's the best way to do everything on <strong>your own</strong></p>
+
+<p>Is Agile the best way? I think it is the right direction. I have been told that Apple apps teams are conformed by 3 people: a developer, a designer and a marketing analyst working with a methodology very similar to scrum. And reading both Tapbots and Team Meat blogs got me an idea on how are they organized, which is again very similar to scrum.</p>
+
+<p>Scrum isn't recommended for teams of two people and I couldn't find information regarding an agile methodology for teams conformed by two people, so there's an interesting field of research there.</p>
+
+<p>How are these three thoughts related?</p>
+
+<ul>
+<li>Independent software development it's <strong>hard</strong>. You have to fulfill multi-disciplinary roles and you have to be the best on each one, pretty much like doing agile, the right way.</li>
+<li>You can't do everything on your own, but it seems that there is a kind of magic formula with two people teams.</li>
+<li>There's an interesting field of research on this two people independent software development teams using kind of agile practices.</li>
+</ul>
+
+<p>All these has my attention for further research, so I'll keep you posted on this when I'll have more information.</p>
     </section>
 
   </article>
