@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io/</link><generator>Ghost v0.4.1</generator><lastBuildDate>Sun, 02 Mar 2014 15:28:47 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Static Analysis on iOS - Part II]]></title><description><![CDATA[<p>This is the second part of my post about static analysis setup on iOS for test results and code coverage, PMD analysis, duplicate code trends and source lines of code count metrics. For this part, I'll be referencing <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example' >this</a> repository. If you're interested in what are those metrics or what are the motivations behind this, be sure to check the <a href='http://ruenzuo.github.io/static-analysis-on-ios-part-i/index.html' >first part</a> of this post.</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io/</link><generator>Ghost v0.4.1</generator><lastBuildDate>Sun, 02 Mar 2014 16:14:00 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[2014]]></title><description><![CDATA[<p>It's been 3 months since my last blog post, but this doesn't mean that I have given up with this! Today I just published <a href='http://ruenzuo.github.io/static-analysis-on-ios-part-ii/index.html' >Static Analysis on iOS - Part II</a> and later next week I'm planing to post something about iOS runtime hackery that I've been working on. If you follow me on <a href='https://twitter.com/Ruenzuo' >Twitter</a>, then you already have seen something of this:</p>
+
+<p><center></p>
+
+<blockquote class="twitter-tweet" lang="en"><p>So why they have like 6 images views for drawing their background? <a href='http://t.co/RAAw5fw3fc' >pic.twitter.com/RAAw5fw3fc</a></p>&mdash; Renzo Crisóstomo (@Ruenzuo) <a href='https://twitter.com/Ruenzuo/statuses/438771794703831040' >February 26, 2014</a></blockquote>  
+
+<script async src='http://platform.twitter.com/widgets.js'  charset="utf-8"></script>
+
+<blockquote class="twitter-tweet" lang="en"><p>I found what I was looking for! This should be fun to play with :) <a href='http://t.co/DzIqCSzvtE' >pic.twitter.com/DzIqCSzvtE</a></p>&mdash; Renzo Crisóstomo (@Ruenzuo) <a href='https://twitter.com/Ruenzuo/statuses/439141530067296256' >February 27, 2014</a></blockquote>  
+
+<script async src='http://platform.twitter.com/widgets.js'  charset="utf-8"></script>
+
+<p></center></p>
+
+<p>Then, what happened on these 3 months? Well, I just finished university:</p>
+
+<p><center></p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/graduation.png'  alt="graduation" /></p>
+
+<p></center></p>
+
+<p>I'm the second from the left, by the way. And I left my country to work on the lovely city of Haugesund in Norway:</p>
+
+<p><center></p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/haugesund_public.png'  alt="haugesund" /></p>
+
+<p></center></p>
+
+<p><center></p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/Blog/haugesund.png'  alt="haugesund" /></p>
+
+<p></center></p>
+
+<p>The last one is the view from my apartment. So yes, I've been <strong>really</strong> busy lately, but I'm back and ready to keep sharing interesting stuff, well at least I like to think I am, about mobile application development and agile methodologies.</p>]]></description><link>http://ruenzuo.github.io/2014/</link><guid isPermaLink="false">2fc342a6-454b-4f1c-a2fe-c82cf24b1129</guid><category><![CDATA[Personal]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sun, 02 Mar 2014 16:00:40 GMT</pubDate></item><item><title><![CDATA[Static Analysis on iOS - Part II]]></title><description><![CDATA[<p>This is the second part of my post about static analysis setup on iOS for test results and code coverage, PMD analysis, duplicate code trends and source lines of code count metrics. For this part, I'll be referencing <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example' >this</a> repository. If you're interested in what are those metrics or what are the motivations behind this, be sure to check the <a href='http://ruenzuo.github.io/static-analysis-on-ios-part-i/index.html' >first part</a> of this post.</p>
 
 <p>The following assumes that you have basic knowledge about <a href='http://jenkins-ci.org/' >Jenkins CI</a> and Linux <a href='http://en.wikipedia.org/wiki/Shell_script' >Shell</a> scripting.</p>
 
