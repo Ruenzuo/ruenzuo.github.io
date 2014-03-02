@@ -1,5 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io/</link><generator>Ghost v0.4.1</generator><lastBuildDate>Sat, 01 Mar 2014 15:15:23 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Static Analysis on iOS - Part I]]></title><description><![CDATA[<p>On this post I'll cover static program analysis on iOS. Probably you're already familiar with this concept, if not, this is an analysis performed on the source code in order to get its quality metrics. Remember: <a href='http://en.wikipedia.org/wiki/W._Edwards_Deming' >"You can't improve what you don't measure"</a>.</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io/</link><generator>Ghost v0.4.1</generator><lastBuildDate>Sun, 02 Mar 2014 15:24:12 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[Static Analysis on iOS - Part II]]></title><description><![CDATA[<p>This is the second part of my post about static analysis setup on iOS for test results and code coverage, PMD analysis, duplicate code trends and source lines of code count metrics. For <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example' >this</a> part, I'll be referencing this repository. If you're interested in what are those metrics or what are the motivations behind this, be sure to check the <a href='http://ruenzuo.github.io/static-analysis-on-ios-part-i/index.html' >first part</a> of this post.</p>
+
+<p>The following assumes that you have basic knowledge about <a href='http://jenkins-ci.org/' >Jenkins CI</a> and Linux <a href='http://en.wikipedia.org/wiki/Shell_script' >Shell</a> scripting.</p>
+
+<hr />
+
+<h3 id="buildsystem">Build system</h3>
+
+<p>We'll be using <a href='https://github.com/facebook/xctool' >xctool</a> as our build system for this. Advantages of this over the regular <a href='https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/xcodebuild.1.html' >xcodebuild</a> are well described by Mattt Thompson on <a href='http://nshipster.com/xctool/' >NSHipster</a>. Basically, we're gonna need compilation output in reports (namely junit and json-compilation-database formats) and xctool already includes these reporters.</p>
+
+<p>So, to setup xctool with your project, you will need to install the script on your computer and add a <code>.xctool-args</code> file on your repository. Refer xctool documentation for information about this, but you'll need something like <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example/blob/master/.xctool-args' >this</a>.</p>
+
+<h3 id="testresultsandcodecoverage">Test results and Code coverage</h3>
+
+<p>You will need something like this on your CI server job in order to get test results:</p>
+
+<p><code>xctool -reporter junit:Build/junit.xml clean test</code></p>
+
+<p>This will run your test target and store the results on <code>Build/junit.xml</code> in the classic junit format. Most Jenkins CI installations already come with <strong>post-build actions</strong> for  JUnit test result publishing, just setup one of those and you'll get something like this:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/GitHub/test_results.png'  alt="test_results" /></p>
+
+<p>If you happen to run with this error on your CI server:</p>
+
+<p><code>ERROR: Cannot find schemes. Please consider creating shared schemes in Xcode.</code></p>
+
+<p>It means that you'll need to set your scheme to shared on Xcode. You can do this on Product > Schemes > Manage schemes.</p>
+
+<p>Getting the code coverage is a little harder. First, you'll need to turn on two flags on your project <strong>debug main target</strong>: <code>Generate Test Coverage Files</code> and <code>Instrument Program Flow</code>. Then, you'll need to run something like this:</p>
+
+<p><code>xctool clean test OBJROOT=./Build</code></p>
+
+<p>This will store the test coverage files on a path I will describe on the next script, but first you need to install <a href='http://gcovr.com/' >GCOVR</a> (I always install those scripts on <code>/opt/scripts/</code>), a tool that will translate these results into Cobertura XML format. Then, you can get the cobertura results with this:</p>
+
+<p><code>/opt/scripts/gcovr -r . --object-directory Build/TestingApp.build/Debug-iphonesimulator/WeatherApp.build/Objects-normal/i386 --exclude '.*Tests.*' --exclude '.*main.*' --xml &gt; Build/coverage.xml</code></p>
+
+<p>See that we're looking inside <code>Debug-iphonesimulator</code>, the target where we enable the two flags. On Jenkins CI, you will need to install <a href='https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin' >Cobertura plugin</a>, setup a post-build action and publish those results. You'll get something like this:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/GitHub/code_coverage.png'  alt="code_coverage" /></p>
+
+<p>If you're getting blank results, at the time of this writing, there's a bug with Xcode 5. In order to get pass through this, you will need to call <code>__gcov_flush()</code> from your application using a <strong>test hook</strong>, details on how to do this are shared on this <a href='http://stackoverflow.com/questions/19136767/generate-gcda-files-with-xcode5-ios7-simulator-and-xctest' >StackOverflow</a> question.</p>
+
+<h3 id="pmdanalysisresults">PMD analysis results</h3>
+
+<p>First, install <a href='http://oclint.org/' >OCLint</a>. This tool will need a <code>json-compilation-database</code> which is just the list of commands that xcodebuild runs. You can get those with xctool using the following:</p>
+
+<p><code>xctool -reporter json-compilation-database:compile_commands.json clean build</code></p>
+
+<p>Then, run OCLint:</p>
+
+<p><code>oclint-json-compilation-database -e Pods/** -- -max-priority-1 20 -max-priority-2 50 -max-priority-3 100 -report-type pmd -o Build/oclint.xml</code></p>
+
+<p>There we're excluding Pods directory, because we're not interested on those sources. <strong>Max priority</strong> values are set in order to make the build fail if those are exceeded.</p>
+
+<p>In order to publish those results on your Jenkins CI, you'll need to install <a href='https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin' >PMD plugin</a>, setup a post-build action and publish those results. Then you'll get something like this:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/GitHub/static_analysis.png'  alt="static_analysis" /></p>
+
+<h3 id="duplicatecodetrends">Duplicate code trends</h3>
+
+<p>This one is fairly straightforward. You'll need to download <a href='http://pmd.sourceforge.net/' >PMD</a> and <a href='https://github.com/jkennedy1980/Objective-C-CPD-Language' >Objective-C-CPD-Language</a> (PMD version 4.2.5 and Objective-C-CPD-Language version 0.0.7 worked for me). Then run something like this:</p>
+
+<p><code>java -Xmx512m -classpath /Applications/pmd/lib/pmd-4.2.5.jar:/Applications/pmd/lang/ObjCLanguage-0.0.7-SNAPSHOT.jar net.sourceforge.pmd.cpd.CPD --minimum-tokens 10 --language ObjectiveC --encoding UTF-8 --format net.sourceforge.pmd.cpd.XMLRenderer --files WeatherApp --files WeatherAppTests &gt; Build/cpd-output.xml</code></p>
+
+<p>In order to publish those results on your Jenkins CI, you'll need to install <a href='https://wiki.jenkins-ci.org/display/JENKINS/DRY+Plugin' >DRY plugin</a>, setup a post-build action and publish those results. Then you'll get something like this:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/GitHub/duplicate_code.png'  alt="duplicate_code" /></p>
+
+<h3 id="sourcelinesofcodecount">Source lines of code count</h3>
+
+<p>First, install <a href='http://cloc.sourceforge.net/' >CLOC</a>. Then run something like this:</p>
+
+<p><code>cloc --by-file --xml -out=Build/cloc.xml WeatherApp</code></p>
+
+<p>This will store the source lines of code count on a xml file but in order to get those published by Jenkins CI, we'll need to translate that xml to <a href='http://www.dwheeler.com/sloccount/' >SLOCCount</a> format with this:</p>
+
+<p><code>xsltproc Utils/Sloccount-format.xls Build/cloc.xml &gt; Build/cloccount.sc</code></p>
+
+<p><code>xsltproc</code> already comes preinstalled on OSX and you can grab an example of <code>Sloccount-format.xls</code> <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example/blob/master/Utils/Sloccount-format.xls' >here</a>. The reason why I'm doing this is because I couldn't get <code>SLOCCount</code> work on OSX Mavericks for some reason, so if you can solve this, please let me know.</p>
+
+<p>In order to publish those results on your Jenkins CI, you'll need to install <a href='https://wiki.jenkins-ci.org/display/JENKINS/SLOCCount+Plugin' >SLOCCount plugin</a>, setup a post-build action and publish those results. Then you'll get something like this:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/GitHub/sloc_count.png'  alt="sloc_count" /></p>
+
+<h3 id="closing">Closing</h3>
+
+<p>I like to have my scripts inside a <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example/tree/master/Scripts' >directory</a> on the project repository, but that's up to you. We surely can do some optimizations here, like for example run <code>xctool test</code> only once and attach all the needed <code>-reporter</code> parameters. I let you experiment with that. </p>
+
+<p>Hopefully you get everything right. But if not, just send me an an email to <a href='mailto:renzo.crisostomo@me.com' >renzo.crisostomo@me.com</a>. Good luck and thanks for reading.</p>]]></description><link>http://ruenzuo.github.io/static-analysis-on-ios-part-ii/</link><guid isPermaLink="false">269a0fd3-2e7d-4567-ab94-b77532a91a00</guid><category><![CDATA[iOS]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sun, 02 Mar 2014 15:09:57 GMT</pubDate></item><item><title><![CDATA[Static Analysis on iOS - Part I]]></title><description><![CDATA[<p>On this post I'll cover static program analysis on iOS. Probably you're already familiar with this concept, if not, this is an analysis performed on the source code in order to get its quality metrics. Remember: <a href='http://en.wikipedia.org/wiki/W._Edwards_Deming' >"You can't improve what you don't measure"</a>.</p>
 
 <p>I'll be diving this in two parts. On the first I'll cover the metrics I use, briefly describing each one of them. On the second part I'll show you how to configure these quality metrics on a dashboard using Jenkins continuous integration server. For this last part, I'll be referencing <a href='https://github.com/Ruenzuo/ios-ci-jenkins-example' >this</a> repository a lot.</p>
 

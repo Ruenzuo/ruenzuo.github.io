@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    
+    <title>Static Analysis on iOS - Part II</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Static Analysis on iOS - Part II">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Static Analysis on iOS - Part II">
+    <meta property="og:description" content="">
+
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://127.0.0.1:2368/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=301b39a365" />
+
+    
+    <meta name="generator" content="Ghost 0.4" />
+<link rel="alternate" type="application/rss+xml" title="Ruenzuo.io" href="../rss/index.html">
+<link rel="canonical" href="http://ruenzuo.github.io/static-analysis-on-ios-part-ii/" />
+
+</head>
+<body class="post-template tag-ios no-js">
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    <header class="panel-cover panel-cover--collapsed" >
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+        <h1 class="panel-cover__title panel-title"><a href="http://ruenzuo.github.io" title="link to homepage for Ruenzuo.io">Ruenzuo.io</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">iOS, Android and Agile.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="../index.html#blog" title="link to Ruenzuo.io blog" class="blog-button">Blog</a></li>
+            </ul>
+          </nav>
+
+          
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Twitter -->
+  <li class="navigation__item">
+    <a href="https://twitter.com/Ruenzuo" title="@Ruenzuo on Twitter">
+      <i class='icon icon-social-twitter'></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+
+  <!-- GitHub -->
+  <li class="navigation__item">
+    <a href="https://github.com/ruenzuo" title="Ruenzuo on GitHub">
+      <i class='icon icon-social-github'></i>
+      <span class="label">GitHub</span>
+    </a>
+  </li>
+
+  <!-- StackOverflow -->
+  <li class="navigation__item">
+    <a href="http://stackoverflow.com/users/1698165/ruenzuo" title="Ruenzuo on StackOverflow">
+      <i class='icon icon-social-stack-overflow'></i>
+      <span class="label">StackOverflow</span>
+    </a>
+  </li>
+
+  <!-- LinkedIn -->
+  <li class="navigation__item">
+    <a href="http://www.linkedin.com/in/renzocrisostomo" title="Renzo Crisóstomo on LinkedIn">
+      <i class='icon icon-social-linkedin'></i>
+      <span class="label">GitHub</span>
+    </a>
+  </li>
+
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:renzo.crisostomo@me.com" title="Email renzo.crisostomo@me.com">
+      <i class='icon icon-mail'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+
+  </ul>
+</nav>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
+
+
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="02 Mar 2014" class="post-meta__date date">02 Mar 2014</time> &#8226; <span class="post-meta__tags tags">on iOS</span>
+        <!--<span class="post-meta__author author"><img src="" alt="profile image for Renzo Crisóstomo" class="avatar post-meta__avatar" /> by Renzo Crisóstomo</span>-->
+      </div>
+      <h1 class="post-title">Static Analysis on iOS - Part II</h1>
+    </header>
+
+    <section class="post tag-ios">
+      <p>This is the second part of my post about static analysis setup on iOS for test results and code coverage, PMD analysis, duplicate code trends and source lines of code count metrics. For <a href="https://github.com/Ruenzuo/ios-ci-jenkins-example">this</a> part, I'll be referencing this repository. If you're interested in what are those metrics or what are the motivations behind this, be sure to check the <a href="http://ruenzuo.github.io/static-analysis-on-ios-part-i/index.html">first part</a> of this post.</p>
+
+<p>The following assumes that you have basic knowledge about <a href="http://jenkins-ci.org/">Jenkins CI</a> and Linux <a href="http://en.wikipedia.org/wiki/Shell_script">Shell</a> scripting.</p>
+
+<hr />
+
+<h3 id="buildsystem">Build system</h3>
+
+<p>We'll be using <a href="https://github.com/facebook/xctool">xctool</a> as our build system for this. Advantages of this over the regular <a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/xcodebuild.1.html">xcodebuild</a> are well described by Mattt Thompson on <a href="http://nshipster.com/xctool/">NSHipster</a>. Basically, we're gonna need compilation output in reports (namely junit and json-compilation-database formats) and xctool already includes these reporters.</p>
+
+<p>So, to setup xctool with your project, you will need to install the script on your computer and add a <code>.xctool-args</code> file on your repository. Refer xctool documentation for information about this, but you'll need something like <a href="https://github.com/Ruenzuo/ios-ci-jenkins-example/blob/master/.xctool-args">this</a>.</p>
+
+<h3 id="testresultsandcodecoverage">Test results and Code coverage</h3>
+
+<p>You will need something like this on your CI server job in order to get test results:</p>
+
+<p><code>xctool -reporter junit:Build/junit.xml clean test</code></p>
+
+<p>This will run your test target and store the results on <code>Build/junit.xml</code> in the classic junit format. Most Jenkins CI installations already come with <strong>post-build actions</strong> for  JUnit test result publishing, just setup one of those and you'll get something like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/GitHub/test_results.png" alt="test_results" /></p>
+
+<p>If you happen to run with this error on your CI server:</p>
+
+<p><code>ERROR: Cannot find schemes. Please consider creating shared schemes in Xcode.</code></p>
+
+<p>It means that you'll need to set your scheme to shared on Xcode. You can do this on Product > Schemes > Manage schemes.</p>
+
+<p>Getting the code coverage is a little harder. First, you'll need to turn on two flags on your project <strong>debug main target</strong>: <code>Generate Test Coverage Files</code> and <code>Instrument Program Flow</code>. Then, you'll need to run something like this:</p>
+
+<p><code>xctool clean test OBJROOT=./Build</code></p>
+
+<p>This will store the test coverage files on a path I will describe on the next script, but first you need to install <a href="http://gcovr.com/">GCOVR</a> (I always install those scripts on <code>/opt/scripts/</code>), a tool that will translate these results into Cobertura XML format. Then, you can get the cobertura results with this:</p>
+
+<p><code>/opt/scripts/gcovr -r . --object-directory Build/TestingApp.build/Debug-iphonesimulator/WeatherApp.build/Objects-normal/i386 --exclude '.*Tests.*' --exclude '.*main.*' --xml &gt; Build/coverage.xml</code></p>
+
+<p>See that we're looking inside <code>Debug-iphonesimulator</code>, the target where we enable the two flags. On Jenkins CI, you will need to install <a href="https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin">Cobertura plugin</a>, setup a post-build action and publish those results. You'll get something like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/GitHub/code_coverage.png" alt="code_coverage" /></p>
+
+<p>If you're getting blank results, at the time of this writing, there's a bug with Xcode 5. In order to get pass through this, you will need to call <code>__gcov_flush()</code> from your application using a <strong>test hook</strong>, details on how to do this are shared on this <a href="http://stackoverflow.com/questions/19136767/generate-gcda-files-with-xcode5-ios7-simulator-and-xctest">StackOverflow</a> question.</p>
+
+<h3 id="pmdanalysisresults">PMD analysis results</h3>
+
+<p>First, install <a href="http://oclint.org/">OCLint</a>. This tool will need a <code>json-compilation-database</code> which is just the list of commands that xcodebuild runs. You can get those with xctool using the following:</p>
+
+<p><code>xctool -reporter json-compilation-database:compile_commands.json clean build</code></p>
+
+<p>Then, run OCLint:</p>
+
+<p><code>oclint-json-compilation-database -e Pods/** -- -max-priority-1 20 -max-priority-2 50 -max-priority-3 100 -report-type pmd -o Build/oclint.xml</code></p>
+
+<p>There we're excluding Pods directory, because we're not interested on those sources. <strong>Max priority</strong> values are set in order to make the build fail if those are exceeded.</p>
+
+<p>In order to publish those results on your Jenkins CI, you'll need to install <a href="https://wiki.jenkins-ci.org/display/JENKINS/PMD+Plugin">PMD plugin</a>, setup a post-build action and publish those results. Then you'll get something like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/GitHub/static_analysis.png" alt="static_analysis" /></p>
+
+<h3 id="duplicatecodetrends">Duplicate code trends</h3>
+
+<p>This one is fairly straightforward. You'll need to download <a href="http://pmd.sourceforge.net/">PMD</a> and <a href="https://github.com/jkennedy1980/Objective-C-CPD-Language">Objective-C-CPD-Language</a> (PMD version 4.2.5 and Objective-C-CPD-Language version 0.0.7 worked for me). Then run something like this:</p>
+
+<p><code>java -Xmx512m -classpath /Applications/pmd/lib/pmd-4.2.5.jar:/Applications/pmd/lang/ObjCLanguage-0.0.7-SNAPSHOT.jar net.sourceforge.pmd.cpd.CPD --minimum-tokens 10 --language ObjectiveC --encoding UTF-8 --format net.sourceforge.pmd.cpd.XMLRenderer --files WeatherApp --files WeatherAppTests &gt; Build/cpd-output.xml</code></p>
+
+<p>In order to publish those results on your Jenkins CI, you'll need to install <a href="https://wiki.jenkins-ci.org/display/JENKINS/DRY+Plugin">DRY plugin</a>, setup a post-build action and publish those results. Then you'll get something like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/GitHub/duplicate_code.png" alt="duplicate_code" /></p>
+
+<h3 id="sourcelinesofcodecount">Source lines of code count</h3>
+
+<p>First, install <a href="http://cloc.sourceforge.net/">CLOC</a>. Then run something like this:</p>
+
+<p><code>cloc --by-file --xml -out=Build/cloc.xml WeatherApp</code></p>
+
+<p>This will store the source lines of code count on a xml file but in order to get those published by Jenkins CI, we'll need to translate that xml to <a href="http://www.dwheeler.com/sloccount/">SLOCCount</a> format with this:</p>
+
+<p><code>xsltproc Utils/Sloccount-format.xls Build/cloc.xml &gt; Build/cloccount.sc</code></p>
+
+<p><code>xsltproc</code> already comes preinstalled on OSX and you can grab an example of <code>Sloccount-format.xls</code> <a href="https://github.com/Ruenzuo/ios-ci-jenkins-example/blob/master/Utils/Sloccount-format.xls">here</a>. The reason why I'm doing this is because I couldn't get <code>SLOCCount</code> work on OSX Mavericks for some reason, so if you can solve this, please let me know.</p>
+
+<p>In order to publish those results on your Jenkins CI, you'll need to install <a href="https://wiki.jenkins-ci.org/display/JENKINS/SLOCCount+Plugin">SLOCCount plugin</a>, setup a post-build action and publish those results. Then you'll get something like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/GitHub/sloc_count.png" alt="sloc_count" /></p>
+
+<h3 id="closing">Closing</h3>
+
+<p>I like to have my scripts inside a <a href="https://github.com/Ruenzuo/ios-ci-jenkins-example/tree/master/Scripts">directory</a> on the project repository, but that's up to you. We surely can do some optimizations here, like for example run <code>xctool test</code> only once and attach all the needed <code>-reporter</code> parameters. I let you experiment with that. </p>
+
+<p>Hopefully you get everything right. But if not, just send me an an email to <a href='mailto:renzo.crisostomo@me.com'>renzo.crisostomo@me.com</a>. Good luck and thanks for reading.</p>
+    </section>
+
+  </article>
+
+ <section class="post-comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'ruenzuoio'; // required: replace example with your forum shortname
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+
+
+            <footer class="footer">
+    <span class="footer__copyright">&copy; 2014. All rights reserved.</span>
+    <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+    <span class="footer__copyright">Proudly published with <a href="http://ghost.org" title="link to Ghost website">Ghost</a></span>
+</footer>
+        </div>
+    </div>
+
+    
+    <script src="../shared/vendor/jquery/jquery.js?v=301b39a365"></script>
+
+    
+    <script type="text/javascript" src="../assets/js/main.js?v=301b39a365"></script>
+
+</body>
+</html>
