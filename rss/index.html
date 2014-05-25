@@ -1,5 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io/</link><generator>Ghost v0.4.1</generator><lastBuildDate>Sat, 26 Apr 2014 19:00:14 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Renzo Crisóstomo]]></author><ttl>60</ttl><item><title><![CDATA[2014]]></title><description><![CDATA[<p>It's been 3 months since my last blog post, but this doesn't mean that I have given up with this! Today I just published <a href='http://ruenzuo.github.io/static-analysis-on-ios-part-ii/index.html' >Static Analysis on iOS - Part II</a> and later on I'm planing to post something about iOS runtime hackery that I've been working on. If you follow me on <a href='https://twitter.com/Ruenzuo' >Twitter</a>, then you already have seen something of this:</p>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Ruenzuo.io]]></title><description><![CDATA[iOS, Android and Agile.]]></description><link>http://ruenzuo.github.io/</link><generator>Ghost v0.4.2</generator><lastBuildDate>Sun, 25 May 2014 15:43:40 GMT</lastBuildDate><atom:link href="http://ruenzuo.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Façade Software Design Pattern on iOS and Android]]></title><description><![CDATA[<p>On this post I'll cover the façade software design pattern implemented on iOS and Android. This pattern has prove useful to me while developing <em>engaging</em> user experiences on mobile applications, why? Because mobile applications users expect apps to perform far better than web counterparts, and we can provide that experience by using system resources like disk (databases) and memory (caches) storages. </p>
+
+<p>But if we don't structure all these system resources access methods in a comprehensive way we could risk ending up with a software design mess. Here's where the façade software design pattern comes into play, providing a single interface to solve a problem with different implementations.</p>
+
+<p>To provide implementation examples, I'll be referencing these <a href='https://github.com/Ruenzuo/ios-facade-example' >iOS</a> and <a href='https://github.com/Ruenzuo/android-facade-example' >Android</a> repositories. I'm not going to cover implementation details. I'll mostly cover the open source libraries I'm using and how I'm using them together, but if you're interested in implementation details feel free to leave me a message or send me an email to <a href='mailto:renzo.crisostomo@me.com' >renzo.crisostomo@me.com</a>.</p>
+
+<hr />
+
+<h3 id="faadesoftwaredesignpatternexplained">Façade software design pattern explained</h3>
+
+<p>According to <a href='http://en.wikipedia.org/wiki/Facade_pattern' >Wikipedia</a>:</p>
+
+<blockquote>
+  <p>A facade is an object that provides a simplified interface to a larger body of code, such as a class library.</p>
+</blockquote>
+
+<p>OK, that doesn't says much. So let's analyze a typical use case first.</p>
+
+<p>Let's say we want to build an app that uses a REST API. We'll need to do network HTTP requests in order to retrieve data form that API, but we can't do this all the time because network requests are <strong>expensive</strong>, they consume battery and they take a lot of time depending on network conditions, so it make sense to cache the network request responses using all the provided mechanisms of the <a href='http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html' >HTTP protocol</a>. But what happens when the user doesn't have internet access? We could use databases and that would be fine, but disk I/O can be also expensive, depending of the database optimization that you could use, and if those requests will be done in a regular basis, it make sense to cache those too, we can use memory storage for that. </p>
+
+<p>I guess that looks complex, we'll the truth is that not all the applications need to do all this, but if you're willing to use all the methods mentioned above in your application, you need to structure your classes in a comprehensive way. Take a look at this class diagram:</p>
+
+<p><img src='https://dl.dropboxusercontent.com/u/12352209/GitHub/android-facade-screenshot-5.png'  alt="class-diagram" /></p>
+
+<p>Here we have four classes, a manager and 3 helpers, implementing the same interface. Helpers are implementing the methods described above and the manager decides, depending several factors, which helper should be used to retrieve the requested data. Next, I'll talk a little about the libraries and techniques I've used to implement each helper both on iOS and Android.</p>
+
+<h3 id="objectserialization">Object serialization</h3>
+
+<p>Not pictured on the class diagram above for the sake of simplicity, but I'm using another helper: a translator helper. According to <a href='http://en.wikipedia.org/wiki/Serialization' >Wikipedia</a>:</p>
+
+<blockquote>
+  <p>In computer science, in the context of data storage, serialization is the process of translating data structures or object state into a format that can be stored (for example, in a file or memory buffer, or transmitted across a network connection link) and reconstructed later in the same or another computer environment.</p>
+</blockquote>
+
+<p>Object serialization has prove useful to me because it allows to manage any kind of data as objects. This objects are used as the input/output of the façade interfaces methods. Two powerful object serialization libraries I use are <a href='https://github.com/Mantle/Mantle' >Mantle</a> on iOS and <a href='https://code.google.com/p/google-gson/' >Gson</a> on Android. Both are able to translate JSON into model objects. You can find my translator helper implementation both on <a href='https://github.com/Ruenzuo/ios-facade-example/blob/master/WeatherApp/Helpers/TranslatorHelper.m' >iOS</a> and <a href='https://github.com/Ruenzuo/android-facade-example/blob/master/WeatherApp/src/main/java/com/ruenzuo/weatherapp/helpers/TranslatorHelper.java' >Android</a> on the repositories mentioned earlier. These objects can implement other persistence strategies, like ActiveRecord, which I'll describe next.</p>
+
+<h3 id="activerecord">Active record</h3>
+
+<p>According to <a href='http://en.wikipedia.org/wiki/Active_record_pattern' >Wikipedia</a>:</p>
+
+<blockquote>
+  <p>Active record is an approach to accessing data in a database. A database table or view is wrapped into a class. Thus, an object instance is tied to a single row in the table. After creation of an object, a new row is added to the table upon save. Any object loaded gets its information from the database. When an object is updated the corresponding row in the table is also updated. The wrapper class implements accessor methods or properties for each column in the table or view.</p>
+</blockquote>
+
+<p>Thanks to object serialization, now we have the data as objects, which can implement this pattern. Two powerful active record libraries I use are <a href='https://github.com/magicalpanda/MagicalRecord' >MagicalRecord</a> on iOS and <a href='https://github.com/pardom/ActiveAndroid' >ActiveAndroid</a> on Android. Implementing this pattern with both libraries is as easy as declare an inheritance or import a category, but I like to wrap the method calls on database helper. You can find my database helper implementation both on <a href='https://github.com/Ruenzuo/ios-facade-example/blob/master/WeatherApp/Helpers/DatabaseHelper.m' >iOS</a> and <a href='https://github.com/Ruenzuo/android-facade-example/blob/master/WeatherApp/src/main/java/com/ruenzuo/weatherapp/helpers/DatabaseHelper.java' >Android</a> on the repositories mentioned earlier. Next, I'll cover network and memory caches.</p>
+
+<h3 id="networkandmemorycaches">Network and Memory caches</h3>
+
+<p>Enabling network cache is often as simple as declaring the size of it (really, see <a href='https://github.com/Ruenzuo/ios-facade-example/blob/master/WeatherApp/Application/AppDelegate.m' #L29-L32">iOS</a> and <a href='https://github.com/Ruenzuo/android-facade-example/blob/master/WeatherApp/src/main/java/com/ruenzuo/weatherapp/helpers/NetworkingHelper.java' #L35-L37">Android</a>). Two powerful networking libraries that I use are <a href='https://github.com/AFNetworking/AFNetworking' >AFNetworking</a> on iOS and <a href='https://github.com/square/okhttp' >OkHttp</a> on Android. Keep in mind that this will only work if the API that you're using is following the HTTP protocol cache methods. Memory cache on the other hard could be a little more tricky: you need to set up a key-value storage and specify a cache invalidation method. Two powerful memory cache libraries that I use are <a href='https://github.com/tumblr/TMCache' >TMCache</a> on iOS and <a href='https://code.google.com/p/guava-libraries/' >Guava</a> on Android. You can find my memory cache helper implementation both on <a href='https://github.com/Ruenzuo/ios-facade-example/blob/master/WeatherApp/Helpers/CacheHelper.m' >iOS</a> and <a href='https://github.com/Ruenzuo/android-facade-example/blob/master/WeatherApp/src/main/java/com/ruenzuo/weatherapp/helpers/MemoryCacheHelper.java' >Android</a> on the repositories mentioned earlier.</p>
+
+<h3 id="synchronizinglargedatasets">Synchronizing large datasets</h3>
+
+<p>Techniques mentioned above, including the façade pattern haven't proved useful to me while synchronizing large datasets. I still haven't find any satisfying method to do this. I've seen some people downloading a pre-made database, but this can be tricky if your data varies a lot between users. What I'm doing now is running long background tasks and saving data on the database as often as I can, so the façade methods avoid network requests as much as possible. On iOS I'm using <a href='https://github.com/Ruenzuo/ios-facade-example/blob/master/WeatherApp/Operations/CitiesOperation.m' >operations</a> and on Android I'm using <a href='https://github.com/Ruenzuo/android-facade-example/blob/master/WeatherApp/src/main/java/com/ruenzuo/weatherapp/services/SyncService.java' >services</a>. Be warned, code is really messy there, I'm not using any design pattern.</p>
+
+<h3 id="closing">Closing</h3>
+
+<p>Things to keep in consideration while implementing something similar to this:</p>
+
+<ul>
+<li>250 countries <a href='http://api.geonames.org/countryInfoJSON?username=WeatherApp' >data set</a> took ~4 seconds to retrieve (serialized) from network, ~0.8 seconds from database and ~0.2 from memory (on an iPhone 4s and a Nexus 5), according to my own benchmarks which you can try yourself, among other things, on the repositories mentioned above.</li>
+<li>Avoid network request as much as possible. Test your network cache methods.</li>
+<li>Avoid cache a large amount of objects in memory and test your cache invalidation methods.</li>
+<li>ActiveRecord and object serialization are two things difficult to get together on the same model. In my experience, using <a href='https://github.com/Ruenzuo/ios-facade-example/tree/master/WeatherApp/Models' >two different models</a> on iOS is not such a bad idea, but probably there are better ways to do that.</li>
+<li>All these is often over complex for most applications, it's up to you to decide when to use each of these strategies, or to use them all.</li>
+</ul>
+
+<p>I'll hope this was helpful to you and please contact me if you have any inquiry about it.</p>]]></description><link>http://ruenzuo.github.io/facade-software-design-pattern-on-ios-and-android/</link><guid isPermaLink="false">895b729d-f4c6-4bfa-b35d-40b186c8f519</guid><category><![CDATA[Android]]></category><category><![CDATA[iOS]]></category><dc:creator><![CDATA[Renzo Crisóstomo]]></dc:creator><pubDate>Sun, 25 May 2014 15:18:59 GMT</pubDate></item><item><title><![CDATA[2014]]></title><description><![CDATA[<p>It's been 3 months since my last blog post, but this doesn't mean that I have given up with this! Today I just published <a href='http://ruenzuo.github.io/static-analysis-on-ios-part-ii/index.html' >Static Analysis on iOS - Part II</a> and later on I'm planing to post something about iOS runtime hackery that I've been working on. If you follow me on <a href='https://twitter.com/Ruenzuo' >Twitter</a>, then you already have seen something of this:</p>
 
 <p><center></p>
 
