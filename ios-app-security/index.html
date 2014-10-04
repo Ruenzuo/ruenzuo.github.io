@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>iOS App Security - Ruenzuo.io</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="iOS App Security">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="iOS App Security">
+    <meta property="og:description" content="">
+
+    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://127.0.0.1:2368/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/uno.css?v=11d498ed87" />
+
+    <meta name="generator" content="Ghost 0.5" />
+<link rel="alternate" type="application/rss+xml" title="Ruenzuo.io" href="../rss/index.html">
+<link rel="canonical" href="http://ruenzuo.github.io/ios-app-security/" />
+
+</head>
+<body class="post-template tag-ios no-js">
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    <header class="panel-cover panel-cover--collapsed " >
+      <div class="panel-main">
+    
+        <div class="panel-main__inner panel-inverted">
+        <div class="panel-main__content">
+    
+            <h1 class="panel-cover__title panel-title"><a href="http://ruenzuo.github.io" title="link to homepage for Ruenzuo.io">Ruenzuo.io</a></h1>
+            <hr class="panel-cover__divider" />
+            <p class="panel-cover__description">iOS, Android and Agile.</p>
+            <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+            <div class="navigation-wrapper">
+    
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="../index.html#blog" title="link to Ruenzuo.io blog" class="blog-button">Blog</a></li>
+                </ul>
+              </nav>
+    
+              
+              <nav class="cover-navigation navigation--social">
+                <ul class="navigation">
+              
+                <!-- Twitter -->
+                <li class="navigation__item">
+                  <a href="https://twitter.com/Ruenzuo" title="@Ruenzuo on Twitter">
+                    <i class='icon icon-social-twitter'></i>
+                    <span class="label">Twitter</span>
+                  </a>
+                </li>
+              
+                <!-- GitHub -->
+                <li class="navigation__item">
+                  <a href="https://github.com/ruenzuo" title="Ruenzuo on GitHub">
+                    <i class='icon icon-social-github'></i>
+                    <span class="label">GitHub</span>
+                  </a>
+                </li>
+              
+                <!-- StackOverflow -->
+                <li class="navigation__item">
+                  <a href="http://stackoverflow.com/users/1698165/ruenzuo" title="Ruenzuo on StackOverflow">
+                    <i class='icon icon-social-stack-overflow'></i>
+                    <span class="label">StackOverflow</span>
+                  </a>
+                </li>
+              
+                <!-- LinkedIn -->
+                <li class="navigation__item">
+                  <a href="http://www.linkedin.com/in/renzocrisostomo" title="Renzo Crisóstomo on LinkedIn">
+                    <i class='icon icon-social-linkedin'></i>
+                    <span class="label">GitHub</span>
+                  </a>
+                </li>
+              
+                <!-- Email -->
+                <li class="navigation__item">
+                  <a href="mailto:renzo.crisostomo@me.com" title="Email renzo.crisostomo@me.com">
+                    <i class='icon icon-mail'></i>
+                    <span class="label">Email</span>
+                  </a>
+                </li>
+              
+                </ul>
+              </nav>
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        <div class="panel-cover--overlay"></div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            
+
+  <article class="post-container post-container--single">
+
+    <header class="post-header">
+      <div class="post-meta">
+        <time datetime="04 Oct 2014" class="post-meta__date date">04 Oct 2014</time> &#8226; <span class="post-meta__tags tags">on <a href="../tag/ios/index.html">iOS</a></span>
+        <!--<span class="post-meta__author author"><img src="" alt="profile image for Renzo Crisóstomo" class="avatar post-meta__avatar" /> by Renzo Crisóstomo</span>-->
+      </div>
+      <h1 class="post-title">iOS App Security</h1>
+    </header>
+
+    <section class="post tag-ios">
+      <p>Well, it's been a while since my last blog post, and this is something I really wanted to write long time ago. There's a lot of information about iOS App Security <a href="http://www.raywenderlich.com/45645/ios-app-security-analysis-part-1">out there</a> and I'm pretty sure that there's at least one talk about this on each iOS development conference. But I wanted to make something different: we'll analyse a real iOS published application, not just a demo app, and we'll cover some of the most interesting topics on app security and analysis. If you want to follow up this yourself, you'll need an iOS jailbroken device and some basic knowledge about Linux Shell scripting. I'll try to keep this as simple as possible, but you'll have to figure out some things anyway.</p>
+
+<p>We'll need some packages installed on the jailbroken device:</p>
+
+<ul>
+<li>OpenSSH</li>
+<li>nano</li>
+<li>Cydia Substrate </li>
+<li>Cycript</li>
+<li>zip</li>
+</ul>
+
+<hr />
+
+<h3 id="notping">NotPing</h3>
+
+<p>So let's get started. The iOS application we'll analyse is a game called: <a href="https://itunes.apple.com/us/app/notping/id852028916?mt=8">NotPing</a> by Carlos Vargas. </p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-1.png" alt="NotPing" /></p>
+
+<p>I think I mentioned Carlos before, he's a friend of mine studying computer science and working as a Generalist Programmer at Ubisoft Montreal. He gladly agreed to take part on this:</p>
+
+<p><center> <br />
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/Ruenzuo">@Ruenzuo</a> no problem! I&#39;m looking forward to read your post! :D</p>&mdash; Carlos Vargas (@cavf88) <a href="https://twitter.com/cavf88/status/518353962500898816">October 4, 2014</a></blockquote> <script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script> <br />
+</center></p>
+
+<p>I highly recommend you to follow him on <a href="https://twitter.com/cavf88">Twitter</a>, he's always sharing cool stuff about game programming.</p>
+
+<p>Well, I don't want to spoil the fun of NotPing, so I won't explain the game mechanics. If you want to find more about the game, download it. The game has Game Center integration, that's pretty cool, and the high scores on the leaderboard are really impressive:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-11.png" alt="NotPing-game" /></p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-2.PNG" alt="high-scores-1" /></p>
+
+<p>And mine is not. I would like to see my name there, let's do that.</p>
+
+<h3 id="viewhierarchyinspection">View hierarchy inspection</h3>
+
+<p>The very first thing I like to do is inspect the view hierarchy of the app. You can learn so much while doing this, just by checking the view classes for instance you could find which frameworks have been used to make the app: if it's using UIKit or something similar or if everything is OpenGL, among other things.</p>
+
+<p>Peter Steinberger has an amazing <a href="http://petersteinberger.com/blog/2013/how-to-inspect-the-view-hierarchy-of-3rd-party-apps/">blog post</a> about this. The first thing we'll need is <a href="http://revealapp.com">Reveal</a>, which is an amazing view hierarchy inspector and if you don't have it yet, you should but it now. You can evaluate Reveal for free . Then we'll need the NotPing's App ID, so how we get that? There are a lot of ways to do this, but a pretty simple one is just unzip the IPA file. You can find the IPA file on the following path:</p>
+
+<p><code>~/Music/iTunes/iTunes Media/Mobile Applications</code></p>
+
+<p>Inside the directory, you'll find something like this:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-3.png" alt="ipa" /></p>
+
+<p>Just open the file with Archive Utility and you'll find something like this inside:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-4.png" alt="ipa-inside" /></p>
+
+<p>We're interested on the property file there. Open it and look for <code>softwareVersionBundleId</code>, that's what we're looking for: </p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-5.png" alt="plist" /></p>
+
+<p>The next thing we need to do is to find both the iOS device and your machine IP addresses. For that you can go to Settings on iOS and System Preferences on OS X:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-7.png" alt="Settings" /></p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-6.png" alt="System-Preferences" /></p>
+
+<p>OK cool, now we can SSH into the jailbroken device. We'll use <code>scp</code> to transfer the Reveal framework from our PC to the device:</p>
+
+<p><code>scp -r /Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework root@192.168.0.20:/System/Library/Frameworks</code></p>
+
+<p>Then, we'll SSH into the device and use <code>nano</code> to create a property list for Reveal:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-8.png" alt="nano-1" /></p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-9.png" alt="nano-2" /></p>
+
+<p>Great! We're almost done. Now just respring with <code>killall SpringBoard</code> and launch Reveal:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-10.png" alt="Reveal" /></p>
+
+<p>Isn't that awesome? Looks like NotPing is using a SKView as a root view, this means it has been built using SceneKit.</p>
+
+<h3 id="classdump">Class dump</h3>
+
+<p>The next thing we'll do is retrieve all the application headers so we get an idea of how the app is architected. We'll use Cycript for this, a tool to explore and modify running applications created by Jay Freeman A.K.A. <a href="https://twitter.com/saurik">saurik</a>, if you don't know who he is I think you should take a break now and google him up. We'll load <a href="https://github.com/limneos/weak_classdump">this</a> script created by Elias Limneos, a well known hacker on the jailbreak community into the app. Transfer the script into the device's home directory and execute the following:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-12.png" alt="weak_classdump" /></p>
+
+<p>Once you hear the lock sound, zip the generated headers and transfer those back to your computer using <code>scp</code> again:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-13.png" alt="zip-1" /></p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-14.png" alt="zip-2" /></p>
+
+<p>Let's look into this, a good start point are class singletons, like the AppDelegate:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-15.png" alt="AppDelegate" /></p>
+
+<p>OK, sadly this time that was not very useful. But let's keep looking for other singletons, there's a class that sure looks interesting:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-16.png" alt="GameManager" /></p>
+
+<p><code>GameManager</code> has a particularly interesting method called <code>- (void)setHighScore:(int)arg1</code>. I think we found our method, but we need to be sure that this method will send the highscore to Game Center. But how we do that? I guess it's time for some assembly inspection.</p>
+
+<h3 id="iosbinariesdecryption">iOS binaries decryption</h3>
+
+<p>iOS binaries are encrypted using Apple's FairPlay encryption. So, in order to decrypt those binaries we'll use Stefan Esser's <a href="https://github.com/stefanesser/dumpdecrypted">dumpdecrypted</a>. Stefan Esser A.K.A <a href="https://twitter.com/i0n1c">i0n1c</a> is a security researcher and also my personal hero. Clone the repository and run <code>make</code> at the root, then <code>scp</code> the generated dynamic library into the device and run the following:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-17.png" alt="dumpdecrypted-1" /></p>
+
+<p>Transfer back the decrypted binary using <code>scp</code> again:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-18.png" alt="dumpdecrypted-2" /></p>
+
+<h3 id="iosbinariesanalysis">iOS binaries analysis</h3>
+
+<p>Now we'll need a disassembler. I particularly like <a href="http://www.hopperapp.com">Hopper</a>, it's pretty cheap compared to others, it has great features and it's constantly updated. You can also evaluate Hopper for free. Open the decrypted binary with Hopper:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-19.png" alt="Hopper-1" /></p>
+
+<p>And now you'll see a lot of assembly code:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-20.png" alt="Hopper-2" /></p>
+
+<p>But don't panic just yet! I said Hopper had great features, so let's use them. Select from the tag scope the <code>GameManager</code> class and then select the <code>[GameManager setHighScore:]</code> method:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-21.png" alt="Hopper-3" /></p>
+
+<p>Now that look's better, but not quite what we're looking for. There's an option on the top right corner to show the Pseudo Code:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-22.png" alt="Hopper-4" /></p>
+
+<p>Now that's it! Everything it's pretty clear now: </p>
+
+<ul>
+<li>It takes a <code>long</code> number parameter.</li>
+<li>Instantiates an <code>NSNumber</code> with it.</li>
+<li>It does some if statement to select the correct board identifier.</li>
+<li>And finally it uses a helper class to send the score to  Game Center. </li>
+</ul>
+
+<h3 id="modifyarunningiosapplication">Modify a running iOS application</h3>
+
+<p>Now we'll use Cycript again to execute that method with our high score. We'll call the <code>choose</code> function which returns an array of all the objects that match the Objective-C class argument:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-23.png" alt="Hopper-4" /></p>
+
+<p>And there we have it:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/12352209/Blog/ios-security-24.png" alt="high-scores-2" /></p>
+
+<h3 id="closing">Closing</h3>
+
+<p>Everything here is working on NotPing 1.1, I'm not sure if Carlos will update the application anytime soon. Feel free to send me an email to send me an email to <a href="mailto:renzo.crisostomo@me.com">renzo.crisostomo@me.com</a> if you are stuck on any step described here, but please <strong>don't contact me</strong> if you want help trying anything of this on other applications without the consent of the creators.</p>
+    </section>
+
+  </article>
+
+ <section class="post-comments">
+   <div id="disqus_thread"></div>
+   <script type="text/javascript">
+       var disqus_shortname = 'ruenzuoio'; // required: replace example with your forum shortname
+       /* * * DON'T EDIT BELOW THIS LINE * * */
+       (function() {
+           var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+           dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+           (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+       })();
+   </script>
+   <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+ </section>
+
+
+
+            <footer class="footer">
+                <span class="footer__copyright">&copy; 2014. All rights reserved.</span>
+                <span class="footer__copyright"><a href="http://uno.daleanthony.com" title="link to page for Uno Ghost theme">Uno theme</a> by <a href="http://daleanthony.com" title="link to website for Dale-Anthony">Dale-Anthony</a></span>
+                <span class="footer__copyright">Proudly published with <a href="http://ghost.org" title="link to Ghost website">Ghost</a></span>
+            </footer>        </div>
+    </div>
+
+    <script src="../public/jquery.js?v=11d498ed87"></script>
+
+    <script type="text/javascript" src="../assets/js/main.js?v=11d498ed87"></script>
+
+</body>
+</html>
